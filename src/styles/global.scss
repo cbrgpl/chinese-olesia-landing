@@ -1,0 +1,75 @@
+@use './variables';
+@use './utils';
+
+html,
+body {
+  font-family: Ubuntu, sans-serif;
+  color: variables.$black;
+  background: variables.$white;
+  margin: 0;
+}
+
+button {
+  border: none;
+}
+
+main {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.title {
+  line-height: 1.5;
+  margin: 0;
+}
+
+.title--h1 {
+  font-size: utils.rem(35px);
+}
+
+.title--h2 {
+  font-size: utils.rem(25px);
+}
+
+.title--h3 {
+  font-size: utils.rem(20px);
+}
+
+.title--h5 {
+  font-size: utils.rem(16px);
+}
+
+p {
+  margin: 0;
+}
+
+.text {
+  line-height: 1.5;
+}
+
+.text--extended-height {
+  line-height: 1.875;
+}
+
+.medium-text {
+  font-size: utils.rem(16px);
+}
+
+.small-text {
+  font-size: utils.rem(14px);
+}
+
+@media screen and (width >= 900px) {
+  .title--h1 {
+    font-size: utils.rem(50px);
+  }
+
+  .title--h2 {
+    font-size: utils.rem(40px);
+  }
+
+  .title--h3 {
+    font-size: utils.rem(30px);
+  }
+}
