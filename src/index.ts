@@ -3,3 +3,7 @@ import './styles/initial.scss';
 
 // eslint-disable-next-line no-console
 console.log('hello world');
+
+window.addEventListener('load', () => {
+  import('./scripts/personal.ts');
+});

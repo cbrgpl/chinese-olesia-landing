@@ -1,0 +1,32 @@
+/* stylelint-disable-next-line scss/load-partial-extension */
+@use 'swiper/scss';
+@use 'swiper/scss/navigation';
+@use 'swiper/scss/pagination';
+@use './../utils';
+@use './../variables';
+
+.swiper {
+  // margin-top: calc(-1 * $paggination-padding-per-side);
+}
+
+.swiper-button-prev,
+.swiper-button-next {
+  margin-top: 0;
+  width: utils.rem(32px);
+  height: utils.rem(32px);
+  padding: utils.rem(6px);
+  border-radius: 100%;
+  transition:
+    color 140ms ease-out,
+    background 140ms,
+    border-color 140ms;
+  border: 1px solid transparent;
+
+  &::after {
+    display: none;
+  }
+
+  &:hover {
+    box-shadow: 0 0 utils.rem(8px) variables.$black-extra;
+  }
+}

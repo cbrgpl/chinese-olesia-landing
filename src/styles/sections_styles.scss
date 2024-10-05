@@ -1,0 +1,44 @@
+@use './utils';
+@use './variables';
+
+.section {
+  margin: auto;
+  margin-bottom: utils.rem(100px);
+}
+
+.medium-section,
+.wide-section {
+  max-width: 100%;
+  padding-left: utils.rem(30px);
+  padding-right: utils.rem(30px);
+}
+
+.medium-section {
+  max-width: utils.rem(1200px);
+}
+
+.wide-section {
+  max-width: utils.rem(1300px);
+}
+
+@media screen and (width >= 800px) {
+  .medium-section {
+    padding-left: utils.rem(80px);
+    padding-right: utils.rem(80px);
+  }
+
+  .wide-section {
+    padding-left: utils.rem(50px);
+    padding-right: utils.rem(50px);
+  }
+
+  main > section:first-of-type {
+    padding-top: utils.rem(40px);
+  }
+}
+
+@media screen and (width >= 900px) {
+  main > section:first-of-type {
+    padding-top: utils.rem(60px);
+  }
+}

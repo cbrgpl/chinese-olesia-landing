@@ -1,0 +1,128 @@
+@use './../utils';
+@use './../variables';
+
+.personal {
+  display: flex;
+  flex-direction: column-reverse;
+}
+
+.personal__biography {
+  margin-bottom: utils.rem(15px);
+  height: utils.rem(427px);
+}
+
+.personal__biography-block {
+  transition: all 200ms ease-in;
+}
+
+.personal__biography-block--hidden {
+  opacity: 0;
+  transform: translateY(-15%);
+}
+
+.personal__title {
+  text-align: left;
+}
+
+.personal__text {
+  max-width: utils.rem(520px);
+  transition: all 250ms linear;
+}
+
+.personal__text--hidden {
+  transform: translateY(-10px);
+  opacity: 0;
+}
+
+.personal__slider-block {
+  float: inline-end;
+}
+
+$paggination-padding-per-side: utils.rem(12px);
+$paggination-height: utils.rem(8px);
+$paggination-padding: $paggination-padding-per-side * 2 + $paggination-height;
+
+.personal__slider {
+  position: relative;
+  width: 100%;
+  max-width: utils.rem(500px);
+
+  // 1.875rem * 2 = padding у секции
+  height: min(calc(130vw - 1.875rem * 2), #{utils.rem(650px)});
+  margin: auto;
+  padding-bottom: utils.rem(32px);
+  margin-bottom: utils.rem(-12px);
+}
+
+.personal__button {
+  bottom: calc(#{utils.rem(16px)} + #{$paggination-padding});
+  top: auto;
+  background: rgba(variables.$black-extra, 0.8);
+  color: variables.$white;
+
+  &:hover {
+    background: rgba(variables.$black-extra, 0.95);
+    border-color: variables.$black-extra;
+  }
+}
+
+.personal__slide {
+}
+
+.personal__image {
+  width: 100%;
+  height: 100%;
+  object-fit: fill;
+}
+
+.personal__pagination {
+  padding: $paggination-padding-per-side 0;
+  display: flex;
+  justify-content: center;
+  bottom: 0 !important;
+}
+
+.personal__pagination-bullet {
+  background: variables.$secondary;
+  opacity: 0.4;
+  transition: opacity 100ms ease-in-out;
+  box-shadow: 0 utils.rem(4px) utils.rem(4px) 0 rgba(#000, 0.25);
+
+  &--active {
+    opacity: 1;
+  }
+}
+
+@media screen and (width >= 720px) {
+  .personal__slider {
+    margin-left: auto;
+    margin-right: 0 !important;
+  }
+
+  .personal__button {
+    bottom: calc(50% + #{$paggination-padding});
+    transform: translateY(50%);
+  }
+}
+
+@media screen and (width >= 1200px) {
+  .personal {
+    flex-direction: row-reverse;
+    justify-content: space-between;
+  }
+
+  .personal__slider {
+    padding-top: 0;
+    margin-top: 0;
+  }
+
+  .personal__button {
+    top: 50%;
+    transform: translateY(-50%);
+  }
+
+  .personal__pagination {
+    top: auto !important;
+    bottom: 0 !important;
+  }
+}

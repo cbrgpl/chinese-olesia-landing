@@ -8,7 +8,8 @@
   </head>
   <body>
     <main>
-      <section class="entry wide-section">
+      <!-- Entry -->
+      <section class="entry section wide-section">
         <div class="entry__content-block">
           <h1 class="title--h1 entry__title">
             Китайский Язык <br />
@@ -19,22 +20,93 @@
             обучением в уютной и дружелюбной обстановке.
           </p>
           <div class="entry__button-wrapper">
-            <img class="" src="" alt="" />
             <picture class="entry__small-image">
-              <source srcset="/public/entry_icon_small_bigger.svg" media="(min-width: 600px)" />
-              <img src="/public/entry_icon_small.svg" alt="" />
+              <source srcset="/entry_icon_small_bigger.svg" media="(min-width: 600px)" />
+              <img src="/entry_icon_small.svg" alt="" />
             </picture>
             <button class="medium-text entry__button">Связаться</button>
           </div>
         </div>
         <div class="entry__image-block">
           <picture>
-            <source srcset="/public/entry_icon_large.svg" media="(min-width: 1300px)" />
-            <img src="/public/entry_icon_medium.svg" alt="" />
+            <source srcset="/entry_icon_large.svg" media="(min-width: 1300px)" />
+            <img src="/entry_icon_medium.svg" alt="" />
           </picture>
         </div>
       </section>
+
+      <!-- Personal -->
+      <section class="personal section medium-section">
+        <div class="personal__biography">
+          <!-- 1 -->
+          <div id="1" class="personal__biography-block">
+            <h3 class="personal__title text--h3">О моем 5-ти летнем опыте</h3>
+            <p class="personal__text text--extended-height small-text">
+              Меня зовут Олеся, занимаюсь преподаванием китайского языка с 2020 года. Независимо от вашего возраста – ребенок, подросток или взрослый – я готова
+              помочь вам в нелегком пути к овладению этого языка. Индивидуальные уроки, адаптированные под ваши потребности, подойдут для любого уровня и
+              принесут ощутимые результаты.
+            </p>
+          </div>
+          <!-- 2 -->
+          <div id="2" class="personal__biography-block personal__biography-block--hidden" style="position: absolute">
+            <h3 class="personal__title text--h3">Мои занятия - какие они?</h3>
+            <p class="personal__text personal__text--hidden text--extended-height small-text">
+              Занятия индивидуальные или в мини-группах, где делюсь своей любовью и интересом к китайскому языку. Используем проверенные учебники от лучших
+              китайских вузов, видео, отрывки из дорам. С помощью интерактивной доски miro и различных платформ(wordwall, joyteka, взнания и других) отрабатывем
+              полученные знания через задания и диалоги на интересные темы.
+            </p>
+          </div>
+          <!-- 3 -->
+          <div id="3" class="personal__biography-block personal__biography-block--hidden" style="position: absolute">
+            <h3 class="personal__title text--h3">Мое знакомство с китайским</h3>
+            <p class="personal__text personal__text--hidden text--extended-height small-text">
+              Китайский язык я начала изучать еще будучи подростком в летнем лагере, общаясь с вожатыми-носителями языка. Я смогла проникнуться этим
+              удивительным и прекрасным языком, и уже ближе к концу школьного обучения во всю начала готовиться к поступлению в Китай. Мое настоящее погружение
+              в язык и культуру началось с поступления на языковой курс при университете, подробности моего обучения вы можете узнать в следующей секции...
+            </p>
+          </div>
+          <!-- 4 -->
+          <div id="4" class="personal__biography-block personal__biography-block--hidden" style="position: absolute">
+            <h3 class="personal__title text--h3">Как я обучалась</h3>
+            <p class="personal__text personal__text--hidden text--extended-height small-text">
+              В 2019 году поступила в 山东理工大学[Shandong University of Technology] на языковой курс, где прокачала свой китайский до сдачи HSK4 2020 год -
+              выиграла грант от правительства Китая в 云南大学[Yunnan University], где получила высшее образование международного экономиста на китайском языке
+              и сдала HSK5. Начала активно набирать учеников, обучаться методикам преподавания и разработке материалов под индивидуальные запросы 2024 год -
+              уехала на учебу в Шанхай развиваться в направлении "Бизнес-китайский", университет 上海财经大学[Shanghai University of Finance and Economics]
+            </p>
+          </div>
+        </div>
+        <div class="personal__slider-block">
+          <div class="personal__slider swiper">
+            <div class="swiper-wrapper">
+              <div class="personal__slide swiper-slide">
+                <img class="personal__image" width="500px" height="650px" src="/personal_slide1.jpg" alt="" />
+              </div>
+              <div class="personal__slide swiper-slide">
+                <img class="personal__image" width="500px" height="650px" src="/personal_slide2.jpg" alt="" />
+              </div>
+              <div class="personal__slide swiper-slide">
+                <img class="personal__image" width="500px" height="650px" src="/personal_slide3.jpg" alt="" />
+              </div>
+              <div class="personal__slide swiper-slide">
+                <img class="personal__image" width="500px" height="650px" src="/personal_slide4.webp" alt="" />
+              </div>
+            </div>
+            <div class="personal__button swiper-button-prev">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
+                <path fill="currentColor" d="m4 10l9 9l1.4-1.5L7 10l7.4-7.5L13 1z" />
+              </svg>
+            </div>
+            <div class="personal__button swiper-button-next">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
+                <path fill="currentColor" d="M7 1L5.6 2.5L13 10l-7.4 7.5L7 19l9-9z" />
+              </svg>
+            </div>
+            <div class="swiper-pagination personal__pagination"></div>
+          </div>
+        </div>
+      </section>
     </main>
-    <script type="module" src="./src/index.js"></script>
+    <script type="module" src="./src/index.ts"></script>
   </body>
 </html>

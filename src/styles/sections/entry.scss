@@ -1,0 +1,99 @@
+@use './../utils';
+@use './../variables';
+@use 'sass:color';
+
+.entry {
+  display: flex;
+  align-items: center;
+}
+
+.entry__content-block {
+  display: flex;
+  flex-direction: column;
+}
+
+.entry__title {
+  margin-bottom: utils.rem(40px);
+  text-align: center;
+}
+
+.entry__description {
+  margin-bottom: utils.rem(200px);
+}
+
+.entry__button-wrapper {
+  position: relative;
+}
+
+.entry__small-image {
+  position: absolute;
+  width: 100%;
+  max-width: calc(#{utils.rem(300px)} + 10vw);
+  right: 50%;
+  top: 0;
+  transform: translateY(calc(-100% - #{utils.rem(15px)})) translateX(50%);
+
+  & > img {
+    width: 100%;
+  }
+}
+
+.entry__button {
+  background: variables.$primary;
+  color: variables.$white;
+  border-radius: utils.rem(10px);
+  width: 100%;
+  padding: utils.rem(20px) utils.rem(80px); // utils.rem(16px) utils.rem(80px)
+  cursor: pointer;
+  box-shadow: 0 12px 25px -10px variables.$primary;
+}
+
+.entry__button:hover {
+  background: color.adjust(variables.$primary, $lightness: -5%);
+}
+
+.entry__button:active {
+  background: color.adjust(variables.$primary, $lightness: -15%);
+}
+
+.entry__image-block {
+  display: none;
+  flex-grow: 1;
+}
+
+@media screen and (width >= 600px) {
+  .entry__description {
+    margin-bottom: utils.rem(230px);
+  }
+
+  .entry__small-image {
+    max-width: none;
+    left: 0;
+    right: auto;
+    top: 0;
+    transform: translateY(calc(-100% - #{utils.rem(15px)}));
+  }
+}
+
+@media screen and (width >= 900px) {
+  .entry__title {
+    text-align: start;
+  }
+
+  .entry__description {
+    margin-bottom: utils.rem(115px);
+  }
+
+  .entry__button {
+    width: utils.rem(242px);
+    padding: utils.rem(16px) utils.rem(80px);
+  }
+
+  .entry__small-image {
+    display: none;
+  }
+
+  .entry__image-block {
+    display: block;
+  }
+}

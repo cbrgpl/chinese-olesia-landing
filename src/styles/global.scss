@@ -9,14 +9,12 @@ body {
   margin: 0;
 }
 
-button {
-  border: none;
+ul {
+  list-style-type: none;
 }
 
-main {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+button {
+  border: none;
 }
 
 .title {
@@ -72,4 +70,8 @@ p {
   .title--h3 {
     font-size: utils.rem(30px);
   }
+}
+
+img {
+  user-select: none;
 }
