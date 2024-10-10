@@ -1,5 +1,10 @@
 @use './variables';
 @use './utils';
+@use './../libs/modal/modal';
+
+* {
+  box-sizing: border-box;
+}
 
 html,
 body {
@@ -7,14 +12,33 @@ body {
   color: variables.$black;
   background: variables.$white;
   margin: 0;
+  overflow: hidden;
+  line-height: 1.5;
 }
 
 ul {
   list-style-type: none;
 }
 
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  margin: 0;
+}
+
 button {
   border: none;
+  cursor: pointer;
+  user-select: none;
+}
+
+main {
+  width: 100vw;
+  height: 100vh;
+  overflow: auto;
 }
 
 .title {

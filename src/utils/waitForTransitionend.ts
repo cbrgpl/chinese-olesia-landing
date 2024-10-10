@@ -5,15 +5,19 @@ export const waitForTransitionend = ( $el: HTMLElement, mutateElCb: ( $el: HTMLE
     resolvePromise = res;
   });
 
-  $el.addEventListener("transitionend", (e) => {
+  const handler = (e) => {
+    console.log(e.target)
+
     if (e.target !== $el) {
       return;
     }
 
     if (resolvePromise) {
       resolvePromise(null);
+      $el.removeEventListener('transitionend', handler)
     }
-  });
+  }
+  $el.addEventListener("transitionend", handler);
 
   mutateElCb( $el )
 

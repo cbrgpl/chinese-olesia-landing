@@ -1,0 +1,181 @@
+@use './../utils';
+@use './../variables';
+
+.universities__title {
+  margin-bottom: utils.rem(40px);
+  text-align: center;
+}
+
+.universities__cards-wrapper {
+  display: flex;
+  flex-direction: column;
+  place-items: center center;
+}
+
+.universities__card {
+  max-width: utils.rem(450px);
+  width: 100%;
+  height: utils.rem(240px);
+  border-radius: utils.rem(4px);
+  overflow: hidden;
+  position: relative;
+  z-index: 1;
+  box-shadow: 0 0 utils.rem(20px) utils.rem(7px) rgba(#000, 0.3);
+
+  &:not(:last-child) {
+    margin-bottom: utils.rem(32px);
+  }
+}
+
+.universities__card-background {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  z-index: -2;
+  opacity: 0.3;
+}
+
+.universities__card-background-mask {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  z-index: -2;
+  background: #222f33;
+}
+
+.universities__card-inner {
+  display: flex;
+  flex-direction: column;
+  padding: utils.rem(12px);
+  height: 100%;
+}
+
+.universities__card-title {
+  font-size: utils.rem(32px);
+  line-height: utils.rem(40px);
+  font-weight: 600;
+  color: variables.$white;
+}
+
+.universities__card-text {
+  font-size: utils.rem(14px);
+  color: variables.$secondary-lightest;
+}
+
+.universities__card-subtitle {
+  margin-bottom: utils.rem(10px);
+}
+
+.universities__card-footer {
+  display: flex;
+  flex-direction: column;
+  margin-top: auto;
+}
+
+.universities__card-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  margin-top: utils.rem(10px);
+  border-radius: utils.rem(12px);
+  padding: utils.rem(8px) 0;
+  background: variables.$primary;
+  box-shadow: 0 0 12px 6px rgba(variables.$primary, 0.5);
+  transition: box-shadow 120ms ease-out;
+
+  &:hover {
+    box-shadow: 0 0 12px 6px rgba(variables.$primary, 0.8);
+  }
+
+  &:active {
+    background-color: variables.$primary-darken;
+    box-shadow: 0 0 12px 6px rgba(variables.$primary-darken, 0.8);
+  }
+}
+
+.universities__modal {
+}
+
+.universities__modal-logo {
+  display: block;
+  margin: auto;
+  max-width: utils.rem(280px);
+  width: 100%;
+  margin-bottom: utils.rem(20px);
+}
+
+.universities__modal-paragraph {
+  text-indent: 1em;
+
+  &:has(+ *) {
+    margin-bottom: utils.rem(12px);
+  }
+}
+
+.universities__modal-content {
+  & img:not(.universities__modal-logo) {
+    border-radius: utils.rem(8px);
+    border: 1px solid rgba(variables.$secondary-lightest, 1);
+  }
+}
+
+// https://habr.com/ru/sandbox/163605/?code=d7a09e1d4f5ad5f9acaaa50d65343834&state=2MWroJlpglNPOyEjY6N2XZ6a&hl=ru
+@media (pointer: fine), (pointer: none) {
+  .universities__card-footer {
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .universities__card-button {
+    width: utils.rem(40px);
+    height: utils.rem(40px);
+    border-radius: 100%;
+    padding: utils.rem(9px);
+    margin-top: 0;
+  }
+
+  .universities__card {
+    height: utils.rem(210px);
+  }
+}
+
+@media screen and (width >= 720px) {
+  .universities__card {
+    &:nth-child(even) {
+      margin-left: auto;
+    }
+
+    &:nth-child(odd) {
+      margin-right: auto;
+    }
+
+    &:not(:last-child) {
+      margin-bottom: utils.rem(48px);
+    }
+  }
+}
+
+@media screen and (width >= 960px) {
+  .universities__cards-wrapper {
+    padding: 0 5vw;
+  }
+}
+
+@media screen and (width >= 1260px) {
+  .universities__cards-wrapper {
+    flex-direction: row;
+    justify-content: space-between;
+    padding: 0;
+  }
+
+  .universities__card {
+    max-width: utils.rem(350px);
+    margin: auto;
+
+    &:not(:last-child) {
+      margin-bottom: 0;
+    }
+  }
+}

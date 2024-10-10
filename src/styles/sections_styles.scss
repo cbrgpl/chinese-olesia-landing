@@ -4,6 +4,7 @@
 .section {
   margin: auto;
   margin-bottom: utils.rem(100px);
+  box-sizing: content-box;
 }
 
 .medium-section,

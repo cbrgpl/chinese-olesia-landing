@@ -1,0 +1,87 @@
+@use '@/styles/utils';
+@use '@/styles/variables';
+
+$modal-bottom-shift: #{utils.rem(20px)};
+
+.modal {
+  background: rgba(#000, 0.4);
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 1;
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  align-items: flex-end;
+  transition: opacity 160ms;
+  user-select: none;
+}
+
+.modal--hidden {
+  opacity: 0;
+}
+
+.modal__window {
+  width: 100%;
+  max-width: utils.rem(560px);
+  max-height: calc(#{utils.rem(320px)} + #{$modal-bottom-shift});
+  background: variables.$white;
+  padding: utils.rem(12px);
+  padding-bottom: calc(#{utils.rem(12px)} + $modal-bottom-shift);
+  transition: all 220ms ease;
+  display: flex;
+  flex-direction: column;
+  margin-left: auto;
+  margin-right: auto;
+  transform: translateY($modal-bottom-shift);
+  border-radius: utils.rem(8px);
+  box-shadow: 0 8px 16px 8px rgba(#000, 0.4);
+  overflow: auto;
+  position: relative;
+  user-select: text;
+}
+
+.modal__window--hidden {
+  transform: translateY(calc(#{$modal-bottom-shift} + #{utils.rem(30px)}));
+  opacity: 0;
+}
+
+.modal__header {
+  display: flex;
+  align-items: center;
+}
+
+.modal__title {
+  margin-bottom: utils.rem(20px);
+}
+
+.modal__close-btn {
+  position: absolute;
+  width: 24px;
+  height: 24px;
+  padding: 6px;
+  right: utils.rem(16px);
+  top: utils.rem(16px);
+  display: flex;
+  background: transparent;
+}
+
+.modal__content {
+  flex-grow: 1;
+}
+
+@media (pointer: fine), (pointer: none) {
+  .modal__window {
+    width: 100%;
+    max-width: utils.rem(720px);
+    max-height: 90vh;
+    padding-bottom: utils.rem(12px);
+    bottom: 50%;
+    transform: translateY(50%);
+    box-shadow: 0 0 16px 8px rgba(#000, 0.4);
+  }
+
+  .modal__window--hidden {
+    transform: translateY(calc(#{$modal-bottom-shift} + 50%));
+  }
+}
