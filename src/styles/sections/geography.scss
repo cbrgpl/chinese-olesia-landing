@@ -1,0 +1,36 @@
+@use './../utils';
+
+.geography__text-block {
+  max-width: utils.rem(628px);
+  margin: auto;
+}
+
+.geography__description {
+  margin-top: utils.rem(20px);
+  margin-bottom: utils.rem(60px);
+}
+
+.geography__map {
+  width: 100%;
+  overflow: auto;
+  box-shadow: inset 0 0 46px 0 rgb(0 0 0 / 30%);
+  border-radius: utils.rem(8px);
+
+  & > img {
+    margin: utils.rem(20px);
+  }
+}
+
+@media screen and (width >= 1360px) {
+  .geography__description {
+    margin-top: utils.rem(30px);
+  }
+
+  .geography__map {
+    box-shadow: none;
+
+    & > img {
+      margin: 0;
+    }
+  }
+}
