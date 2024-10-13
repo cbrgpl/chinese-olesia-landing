@@ -6,6 +6,30 @@
   box-sizing: border-box;
 }
 
+@supports (scrollbar-color: auto) {
+  * {
+    scrollbar-color: variables.$primary variables.$black;
+    scrollbar-width: thin;
+  }
+}
+
+@supports selector(::-webkit-scrollbar) {
+  * {
+    scrollbar-color: auto;
+    scrollbar-width: auto;
+  }
+
+  *::-webkit-scrollbar {
+    background: variables.$black;
+    width: 6px;
+  }
+
+  *::-webkit-scrollbar-thumb {
+    background: variables.$primary;
+    border-radius: 6px;
+  }
+}
+
 html,
 body {
   font-family: Ubuntu, sans-serif;
