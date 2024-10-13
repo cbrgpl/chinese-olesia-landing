@@ -36,6 +36,7 @@
 
 .personal__slider-block {
   float: inline-end;
+  margin-bottom: utils.rem(15px);
 }
 
 $paggination-padding-per-side: utils.rem(12px);
@@ -95,17 +96,16 @@ $paggination-padding: $paggination-padding-per-side * 2 + $paggination-height;
     margin-left: auto;
     margin-right: 0 !important;
   }
-
-  .personal__button {
-    bottom: calc(50% + #{$paggination-padding});
-    transform: translateY(50%);
-  }
 }
 
 @media screen and (width >= 1200px) {
   .personal {
     flex-direction: row-reverse;
     justify-content: space-between;
+  }
+
+  .personal__slider-block {
+    margin-bottom: 0;
   }
 
   .personal__slider {

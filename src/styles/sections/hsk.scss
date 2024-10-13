@@ -146,7 +146,7 @@
 
 .hsk__panel {
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: 1fr 2px 1fr;
   gap: utils.rem(45px) utils.rem(15px);
   padding: utils.rem(40px) utils.rem(20px) utils.rem(20px);
   background: variables.$white;
@@ -158,6 +158,7 @@
   display: flex;
   flex-direction: column;
   align-items: center;
+  position: relative;
 }
 
 .hsk__panel-item-icon {
@@ -197,9 +198,19 @@
   font-weight: 400;
 }
 
+.hsk__panel-splitter {
+  height: 100%;
+  align-self: center;
+  border: 1px solid #eeeff2;
+  border-radius: 2px;
+
+  &:nth-child(4) {
+    display: none;
+  }
+}
+
 @media screen and (width >= 600px) {
   .hsk__panel {
-    grid-template-columns: repeat(4, 1fr);
     padding: utils.rem(50px) utils.rem(30px) utils.rem(30px);
   }
 
@@ -216,6 +227,17 @@
   .hsk__cards-wrapper {
     grid-template-columns: 1fr 1fr;
     gap: utils.rem(15px) utils.rem(5px);
+  }
+
+  .hsk__panel {
+    padding: utils.rem(50px) calc(#{utils.rem(30px)} + 3vw) utils.rem(30px);
+    grid-template-columns: max-content minmax(2px, auto) max-content minmax(2px, auto) max-content minmax(2px, auto) max-content;
+  }
+
+  .hsk__panel-splitter {
+    &:nth-child(4) {
+      display: block;
+    }
   }
 }
 
