@@ -42,6 +42,6 @@ jobs:
       - uses: actions/upload-pages-artifact@v2
         with:
           # Публикация проекта, тут можно изменить имя публикуемой папки:
-          path: 'site'
+          path: 'dist'
         id: deployment
       - uses: actions/deploy-pages@v2
