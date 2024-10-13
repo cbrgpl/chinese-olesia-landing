@@ -7,7 +7,8 @@
   "license": "ISC",
   "scripts": {
     "dev": "vite",
-    "build": "vite build --watch",
+    "build": "vite build",
+    "build--watch": "vite build --watch",
     "preview": "vite preview",
     "prepare": "husky"
   },
