@@ -32,7 +32,7 @@ jobs:
       - uses: actions/checkout@v3
       - uses: actions/setup-node@v3
         with:
-          node-version: $NaN
+          node-version: '20'
 
       - run: set -eu
 # Сборка с помощью скрипта build, если проект собирается с помощью скрипта с другим названием, его можно поменять тут:
