@@ -1,0 +1,88 @@
+@use './../utils';
+@use './../variables';
+
+.problems {
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  z-index: 1;
+}
+
+.problems__img {
+  width: 100%;
+  max-width: utils.rem(350px);
+  margin-left: auto;
+  margin-right: auto;
+  margin-bottom: utils.rem(20px);
+}
+
+.problems__description {
+  max-width: utils.rem(450px);
+}
+
+.problems__title {
+  margin-bottom: utils.rem(30px);
+}
+
+.problems__problem {
+  font-size: utils.rem(14px);
+  color: variables.$black-extra;
+  padding-inline-start: utils.rem(10px);
+  display: flex;
+  align-items: flex-start;
+
+  & > span {
+    margin-top: -0.2em;
+    hyphens: auto;
+  }
+
+  &::before {
+    content: url('/problems_tick.svg');
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    height: utils.rem(16px);
+    width: utils.rem(16px);
+    margin-right: utils.rem(10px);
+  }
+
+  &:not(:last-child) {
+    margin-bottom: utils.rem(15px);
+  }
+}
+
+@media screen and (width >= 650px) {
+  .problems {
+    padding-top: utils.rem(150px);
+    overflow: hidden;
+  }
+
+  .problems__img {
+    margin: 0;
+    position: absolute;
+    z-index: -1;
+    right: 0;
+    top: utils.rem(50px);
+  }
+}
+
+@media screen and (width >= 920px) {
+  .problems {
+    overflow: visible;
+    padding-top: 0;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: flex-end;
+  }
+
+  .problems__img {
+    position: static;
+    margin-top: 0;
+    max-width: utils.rem(536px);
+    margin-right: utils.rem(15px);
+  }
+
+  .problems__description {
+    margin-bottom: utils.rem(25px);
+  }
+}
