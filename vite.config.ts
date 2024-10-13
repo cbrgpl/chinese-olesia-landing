@@ -6,7 +6,6 @@ import tsconfigPaths from 'vite-tsconfig-paths'
 
 export default defineConfig( {
   root: './',
-  base: '/chinese-teacher-landing/',
 
   build: {
     sourcemap: true,
