@@ -1,0 +1,106 @@
+@use './../utils';
+@use './../variables';
+
+.plans__description {
+  margin: utils.rem(20px) auto utils.rem(40px);
+  max-width: utils.rem(628px);
+}
+
+.plans__cards {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: utils.rem(20px) 0;
+}
+
+.plans__card {
+  background: variables.$white;
+  border: 2px solid #ddd;
+  border-radius: 10px;
+  padding: utils.rem(20px);
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  max-width: utils.rem(363px);
+  font-size: utils.rem(16px);
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.plans__card-description {
+  display: flex;
+  flex-direction: column;
+  padding: 0 utils.rem(10px);
+
+  &::after {
+    content: '';
+    display: block;
+    margin: utils.rem(40px) utils.rem(10px);
+    height: 2px;
+    background: variables.$secondary-lightest;
+  }
+}
+
+.plans__card-image {
+  height: utils.rem(96px);
+  aspect-ratio: 1;
+  margin-bottom: utils.rem(24px);
+  margin-right: auto;
+  margin-left: auto;
+}
+
+.plans__card-title {
+  text-align: center;
+  font-size: calc(1em + 2px);
+  font-weight: 500;
+  color: #0b132a;
+  margin-bottom: utils.rem(20px);
+}
+
+.plans__card-description-list-item {
+  font-size: calc(1em - 2px);
+  color: variables.$black-extra;
+  display: flex;
+  align-items: flex-start;
+
+  & > span {
+    margin-bottom: -0.2em;
+  }
+
+  &::before {
+    content: url('/plans_tick.svg');
+    display: inline-flex;
+  }
+
+  &:not(:last-child) {
+    margin-bottom: utils.rem(15px);
+  }
+}
+
+.plans__card-price {
+  margin-top: auto;
+
+  &::before {
+    content: 'Стоимость';
+    display: block;
+    text-align: center;
+    font-size: calc(1em + 2px);
+    font-weight: 700;
+    color: variables.$black-extra;
+    margin-bottom: utils.rem(24px);
+  }
+}
+
+.plans__card-price-list-item {
+  font-size: calc(1em - 2px);
+
+  &:not(:last-child) {
+    margin-bottom: utils.rem(15px);
+  }
+}
+
+@media screen and (width >= 720px) {
+  .plans__cards {
+    grid-template-columns: 1fr 1fr;
+    gap: utils.rem(80px) utils.rem(20px);
+  }
+}
