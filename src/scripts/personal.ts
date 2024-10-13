@@ -128,7 +128,6 @@ const debounce = ( params: { cb: ( ...args: any[] ) => void, time: number }) => 
   }
 }
 
-
 requestIdleCallback(() => {
   const debouncedOnRealInxChange = debounce({
     cb: ( realIndex: number ) => { showBiographyBlock( realIndex ) },
@@ -164,4 +163,11 @@ requestIdleCallback(() => {
       prevEl: '.swiper-button-prev',
     },
   });
+})
+
+requestIdleCallback(() => {
+  $biographyBlocks.forEach(( $block ) => {
+    $block.style.opacity = null as any
+    $block.style.pointerEvents = null as any
+  })
 })
