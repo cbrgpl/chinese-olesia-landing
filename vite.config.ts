@@ -4,6 +4,11 @@ import { defineConfig } from 'vite'
 
 import tsconfigPaths from 'vite-tsconfig-paths'
 
+import viteImagemin from '@vheemstra/vite-plugin-imagemin'
+import imageminMozjpeg from 'imagemin-mozjpeg'
+import imageminWebp from 'imagemin-webp'
+
+
 export default defineConfig( {
   root: './',
 
@@ -17,6 +22,17 @@ export default defineConfig( {
 
   plugins: [
     tsconfigPaths(),
+    viteImagemin({
+      plugins: {
+        jpg: imageminMozjpeg(),
+      },
+      makeWebp: {
+      formatFilePath: ( file ) => file.replace(/\.je?pg$/, '') + ".webp",
+        plugins: {
+          jpg: imageminWebp(),
+        },
+      },
+    }),
   ],
 
   resolve: {
