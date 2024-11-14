@@ -4,13 +4,13 @@ import { glob } from 'glob'
 
 import pPipe from 'p-pipe';
 import imageminWebp from 'imagemin-webp'
-import imageminMozjpeg from 'imagemin-mozjpeg'
 
 import yargs from 'yargs/yargs'
 import { hideBin } from 'yargs/helpers'
 import { cwd, exit } from 'process';
 
 import { handleSettledResult } from './utils/handleSettledResult.js'
+import { toLowQuality } from './utils/toLowQuality.js'
 
 const CWD = cwd()
 
@@ -24,7 +24,6 @@ const generateNewFileName = (originalPath: string, suffix: string | null, extens
 }
 
 const toWebp = pPipe<Buffer, Uint8Array>(imageminWebp({ quality: 50 }) as any)
-const toLowQuality = pPipe<Buffer, Uint8Array>(imageminMozjpeg({ quality: 5 }) as any)
 
 type IFile<T extends Buffer | Uint8Array> = {
   content: T;

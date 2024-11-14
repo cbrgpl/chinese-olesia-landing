@@ -21,6 +21,7 @@
 
 .c-image__low-quality-img {
   color: #fff;
+  display: block;
 }
 
 .c-image__img {

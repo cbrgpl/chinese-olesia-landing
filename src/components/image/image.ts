@@ -121,6 +121,8 @@ class CImage extends HTMLElement {
     if(lowQualitySrc) {
       const $lowQualityImg = createImgEl(lowQualitySrc, {...imageAttrs, alt: null})
       $lowQualityImg.setAttribute('fetchpriority', 'high')
+      $lowQualityImg.setAttribute('width', '100%')
+      $lowQualityImg.setAttribute('height', '100%')
       $lowQualityImg.classList.add("c-image__low-quality-img")
       return $lowQualityImg
     }
@@ -167,7 +169,7 @@ class CImage extends HTMLElement {
     const $shadow = this.attachShadow({ mode: 'open' })
 
     this.style.display = 'block'
-    // TODO I should optimize it cause it appends in every uses of webcomponent
+    // TODO I should optimize it cause it appends in every usage of webcomponent
     const $styles = createStyleTags([
       imageStyles
     ])
@@ -200,9 +202,10 @@ class CImage extends HTMLElement {
 
     const $picture = this._createPictureEl(imageAttrs)
     const $pictureImg = $picture.lastChild
-    $pictureImg?.addEventListener('load', () => {
+    $pictureImg?.addEventListener('load', async () => {
       console.log('Отображаю хорошего качества картинку', this._id)
-      if(!!$lowQualityImg) {
+
+      if($lowQualityImg) {
         console.log('Заменяю плохую картинку на хорошую', this._id)
         $wrapper.replaceChild($picture, $lowQualityImg)
       } else {

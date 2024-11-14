@@ -9,7 +9,7 @@
     "dev": "vite",
     "build": "vite build",
     "build--watch": "vite build --watch",
-    "create-images": "npx tsx ./node_scripts/gen_images.ts --input-patterns **/*.jpg",
+    "create-images": "npx tsx ./node_scripts/gen_images.ts --input-patterns public/**/*.{jpg,webp};",
     "preview": "vite preview",
     "prepare": "husky"
   },
