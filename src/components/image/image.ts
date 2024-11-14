@@ -83,8 +83,9 @@ const createImgEl = ( src: string, attrs: IImageAttrs ) => {
 }
 
 class CImage extends HTMLElement {
-  static observedAttributes = [ "sources" ];
+  static readonly observedAttributes = [ "sources" ];
   private _id: string = getId()
+  private _rendered = false
 
   private _createPictureEl( imageAttrs: IImageAttrs ): HTMLElement {
     const sources = parseSources(this.getAttribute('sources'))
@@ -132,8 +133,8 @@ class CImage extends HTMLElement {
 
     $wrapper.classList.add('c-image__wrapper')
 
-    $wrapper.style.width = imageAttrs.width ?? '100%'
-    $wrapper.style.height = imageAttrs.height ?? '100%'
+    $wrapper.style.width = '100%'
+    $wrapper.style.height = '100%'
 
     const placeholderRequired = this.getAttribute('no-placeholder') === null
     console.log(this._id, this.getAttribute('no-placeholder'))
@@ -160,8 +161,12 @@ class CImage extends HTMLElement {
   }
 
   async connectedCallback() {
+    if(this._rendered) { return }
+
+    this._rendered = true
     const $shadow = this.attachShadow({ mode: 'open' })
 
+    this.style.display = 'block'
     // TODO I should optimize it cause it appends in every uses of webcomponent
     const $styles = createStyleTags([
       imageStyles
