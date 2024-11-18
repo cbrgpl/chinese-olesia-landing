@@ -169,7 +169,7 @@ class CImage extends HTMLElement {
     const $shadow = this.attachShadow({ mode: 'open' })
 
     this.style.display = 'block'
-    // TODO I should optimize it cause it appends in every usage of webcomponent
+    // TODO I should optimize it cause it is appended in every usage of webcomponent
     const $styles = createStyleTags([
       imageStyles
     ])
@@ -200,18 +200,20 @@ class CImage extends HTMLElement {
       $wrapper.appendChild($lowQualityImg)
     }
 
-    const $picture = this._createPictureEl(imageAttrs)
-    const $pictureImg = $picture.lastChild
-    $pictureImg?.addEventListener('load', async () => {
-      console.log('Отображаю хорошего качества картинку', this._id)
+    $lowQualityImg?.addEventListener('load', () => {
+      const $picture = this._createPictureEl(imageAttrs)
+      const $pictureImg = $picture.lastChild
+      $pictureImg?.addEventListener('load', async () => {
+        console.log('Отображаю хорошего качества картинку', this._id)
 
-      if($lowQualityImg) {
-        console.log('Заменяю плохую картинку на хорошую', this._id)
-        $wrapper.replaceChild($picture, $lowQualityImg)
-      } else {
-        $wrapper.append($picture)
-      }
+        if($lowQualityImg) {
+          console.log('Заменяю плохую картинку на хорошую', this._id)
+          $wrapper.replaceChild($picture, $lowQualityImg)
+        } else {
+          $wrapper.append($picture)
+        }
 
+      })
     })
   }
 

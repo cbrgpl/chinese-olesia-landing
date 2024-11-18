@@ -9,13 +9,13 @@
     "dev": "vite",
     "build": "vite build",
     "build--watch": "vite build --watch",
-    "create-images": "npx tsx ./node_scripts/gen_images.ts --input-patterns public/**/*.{jpg,webp};",
+    "create-images": "npx tsx ./vite_plugins/gen_images.ts -p public/**/*.{jpg,webp};",
     "preview": "vite preview",
     "prepare": "husky"
   },
   "lint-staged": {
     "*.js": "eslint --fix --ignore-pattern .gitignore",
-    "*.{css,html  }": "stylelint --fix --ignore-path .gitignore"
+    "*.{css,html}": "stylelint --fix --ignore-path .gitignore"
   },
   "devDependencies": {
     "@babel/eslint-parser": "^7.24.5",
@@ -25,10 +25,12 @@
     "@types/eslint-config-prettier": "^6.11.3",
     "@types/imagemin": "^9.0.0",
     "@types/imagemin-mozjpeg": "^8.0.4",
+    "@types/imagemin-svgo": "^10.0.5",
     "@types/imagemin-webp": "^7.0.3",
     "@types/node": "^20.13.0",
     "@types/yargs": "^17.0.33",
     "@vheemstra/vite-plugin-imagemin": "^2.0.0",
+    "chalk": "^5.3.0",
     "eslint": "^9.3.0",
     "eslint-plugin-html": "^8.1.1",
     "eslint-plugin-json": "^3.1.0",
@@ -40,6 +42,7 @@
     "imagemin-svgo": "^11.0.1",
     "imagemin-webp": "^8.0.0",
     "lint-staged": "^15.2.5",
+    "p-pipe": "^4.0.0",
     "prettier": "3.2.5",
     "sass": "^1.77.8",
     "sharp": "^0.33.5",
@@ -47,6 +50,7 @@
     "stylelint-config-standard": "^36.0.0",
     "stylelint-config-standard-scss": "^13.1.0",
     "stylelint-prettier": "^5.0.0",
+    "ts-deepmerge": "^7.0.1",
     "tsx": "^4.19.2",
     "typescript": "^5.6.3",
     "vite": "^5.2.12",
