@@ -1,95 +1,187 @@
-/* eslint-env node */
+import js from '@eslint/js';
+import json from '@eslint/json';
+
 import globals from 'globals';
 
-import babelParser from '@babel/eslint-parser';
+import parserBabel from '@babel/eslint-parser';
 
-import htmlPlugin from 'eslint-plugin-html';
-import prettierPlugin from 'eslint-plugin-prettier/recommended';
+import tseslint from 'typescript-eslint';
+import * as tsResolver from 'eslint-import-resolver-typescript';
 
-import js from '@eslint/js';
+import pluginImportX from 'eslint-plugin-import-x';
 
-const rules = {
-  eslint: {
-    'no-case-declarations': 'off',
-    'import/no-unresolved': 'off',
-    'import/namespace': 'off',
-    'import/no-duplicates': 'off',
-    'no-async-promise-executor': 'off',
-    'import/named': 'off',
-    curly: 2,
-    'no-throw-literal': 'off',
-    camelcase: [
-      'error',
-      {
-        properties: 'always',
-      },
-    ],
-    'arrow-spacing': ['error', { before: true, after: true }],
-    'operator-assignment': ['error', 'always'],
-    'no-var': 'error',
-    'func-style': 'error',
-    'no-console': [
-      'error',
-      {
-        allow: ['warn', 'trace', 'group', 'groupCollapsed', 'groupEnd'],
-      },
-    ],
-    'promise/catch-or-return': 'off',
-    'promise/always-return': 'off',
+import pluginPrettierRecommended from 'eslint-plugin-prettier/recommended';
+import * as configPrettier from 'eslint-config-prettier';
+
+const isProd = process.env.NODE_ENV === 'production';
+const runInProd = (config) => (!isProd ? 'off' : config);
+
+const rulesJs = {
+  ...js.configs.recommended.rules,
+  ...configPrettier.rules,
+};
+const rulesTs = {
+  '@typescript-eslint/consistent-type-imports': 'error',
+  '@typescript-eslint/no-unused-vars': 'error',
+  '@typescript-eslint/no-explicit-any': 'warn',
+  '@typescript-eslint/no-non-null-assertion': 'off',
+  '@typescript-eslint/no-dynamic-delete': 'warn',
+};
+
+const localConfigIgnores = {
+  ignores: ['node_modules', '.vscode', 'package-lock.json', 'dist', '.cache'],
+};
+
+const localConfigImport = {
+  files: ['**/*.js', 'src/**/*.ts', 'vite.config.ts'],
+  plugins: {
+    'import-x': pluginImportX,
   },
-  prefixBlocks: {},
-};
-
-const addPrefixesToRules = () => {
-  const prefixedRules = {};
-
-  for (const prefixBlock of Object.keys(rules.prefixBlocks)) {
-    const { prefix, rules: notPrefixedRules } = rules.prefixBlocks[prefixBlock];
-
-    const prefixedBlockRules = {};
-    Object.keys(notPrefixedRules).forEach((rule) => {
-      const prefixedRule = `${prefix}/${rule}`;
-      prefixedBlockRules[prefixedRule] = notPrefixedRules[rule];
-    });
-
-    prefixedRules[prefixBlock] = prefixedBlockRules;
-  }
-
-  return prefixedRules;
-};
-
-const readyRules = {
-  eslint: rules.eslint,
-  ...addPrefixesToRules(),
-};
-
-const eslint = {
-  ignores: ['node_modules/*', 'dist/*', 'package-lock.json'],
-  languageOptions: {
-    ecmaVersion: 2023,
-    sourceType: 'module',
-    parser: babelParser,
-    globals: {
-      ...globals.browser,
-      ...globals.node,
-      // myCustomGlobal: "readonly"
+  settings: {
+    'import-x/resolver': {
+      name: 'tsResolver',
+      resolver: tsResolver,
+    },
+    'import-x/parsers': {
+      '@typescript-eslint/parser': ['.ts', '.tsx'],
+      '@babel/eslint-parser': ['.js'],
     },
   },
-  plugins: {
-    html: htmlPlugin,
-  },
   rules: {
-    ...readyRules['eslint'],
+    ...pluginImportX.configs.recommended.rules,
+    'import-x/export': 'error',
+    'import-x/first': 'off',
+    'import-x/extensions': 'off',
+    'import-x/no-self-import': 'error',
+    'import-x/no-unresolved': 'error',
+    'import-x/no-useless-path-segments': [
+      'error',
+      {
+        noUselessIndex: true,
+      },
+    ],
+    'import-x/order': 'off',
+    'import-x/no-cycle': runInProd('error'),
+    'import-x/no-deprecated': runInProd('warn'),
+    'import-x/no-unused-modules': runInProd('error'),
+    'import-x/no-named-as-default': runInProd('error'),
+  },
+};
+
+const localConfigJsNode = [
+  {
+    files: ['eslint.config.js'],
+    languageOptions: {
+      ecmaVersion: 'latest',
+      globals: {
+        ...globals.builtin,
+        ...globals.node,
+      },
+      parser: parserBabel,
+    },
+    settings: {
+      'prettier/prettier': 'error',
+    },
+    rules: {
+      ...rulesJs,
+    },
+  },
+];
+
+const localConfigJs = {
+  files: ['**/*.js'],
+  ignores: localConfigJsNode[0].files,
+  plugins: {},
+  languageOptions: {
+    ecmaVersion: 'latest',
+    globals: {
+      ...globals.builtin,
+      ...globals.browser,
+    },
+    parser: parserBabel,
   },
   settings: {
     'prettier/prettier': 'error',
-    'import/extensions': ['.js', '.jsx'],
-    'import/resolver': {
-      alias: {
-        map: [['@', './src']],
-      },
-    },
+  },
+  rules: {
+    ...rulesJs,
   },
 };
 
-export default [js.configs.recommended, eslint, prettierPlugin];
+const localConfigTsNode = [
+  {
+    files: ['vite.config.ts'],
+    plugins: {},
+    languageOptions: {
+      ecmaVersion: 'latest',
+      globals: {
+        ...globals.builtin,
+        ...globals.node,
+      },
+    },
+    settings: {
+      'prettier/prettier': 'error',
+      'import-x/resolver': {
+        options: {
+          project: ['tsconfig.node.json'],
+        },
+      },
+    },
+    rules: {
+      ...rulesTs,
+    },
+  },
+];
+
+const localConfigTs = [
+  ...tseslint.configs.strict,
+  pluginImportX.configs.typescript,
+  {
+    files: ['**/*.ts'],
+    ignores: localConfigTsNode[0].files,
+    languageOptions: {
+      ecmaVersion: 'latest',
+      globals: {
+        ...globals.builtin,
+        ...globals.browser,
+      },
+    },
+    settings: {
+      'prettier/prettier': 'error',
+      'import-x/resolver': {
+        options: {
+          project: ['tsconfig.src.json'],
+        },
+      },
+    },
+    rules: {
+      ...rulesTs,
+    },
+  },
+];
+
+const localConfigJson = [
+  {
+    plugins: {
+      json,
+    },
+  },
+  {
+    files: ['**/*.json'],
+    language: 'json/json',
+    rules: {
+      'json/no-duplicate-keys': 'error',
+    },
+  },
+];
+
+export default tseslint.config(
+  localConfigIgnores,
+  pluginPrettierRecommended,
+  localConfigImport,
+  localConfigJs,
+  ...localConfigJsNode,
+  ...localConfigTs,
+  ...localConfigTsNode,
+  ...localConfigJson
+);

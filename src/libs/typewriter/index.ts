@@ -1,1 +1,1 @@
-export { TextsContainer, TypeWritterHtml, TypeWriter} from './typewriter'
+export { TextsContainer, TypeWritterHtml, TypeWriter } from './typewriter';

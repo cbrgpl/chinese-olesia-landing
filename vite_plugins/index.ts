@@ -1,7 +1,4 @@
-import { vitePluginFilesTransformer } from './vitePlugin'
-import type { ITransform } from './types'
+import { vitePluginFilesTransformer } from './vitePlugin';
+import type { ITransform } from './types';
 
-export {
-  vitePluginFilesTransformer,
-  type ITransform
-}
+export { vitePluginFilesTransformer, type ITransform };

@@ -1,5 +1,4 @@
-import { TypeWriter, TypeWritterHtml, TextsContainer } from "./typewriter";
-
+import { TypeWriter, TypeWritterHtml, TextsContainer } from './typewriter';
 
 /*
 
@@ -57,14 +56,15 @@ button {
 
 
 */
+
 const texts = new TextsContainer([
-  "Жизнь идет своим чередом, люди работают, учатся и стремятся к успеху. В каждом городе есть история, которая вдохновляет на подвиги. Природа радует своим величием, а семья поддерживает в трудные времена. Машины едут по дорогам, телефоны звенят, дети учат уроки, студенты готовятся к экзаменам. Книги и фильмы открывают новые горизонты. Музыка звучит на фестивалях, программы развивают технологии. Каждый день приносит новые возможности. Любовь движет миром, знание открывает двери. Планы строятся, проекты реализуются. Работа – это путь к достижению мечты.",
-  "На улице стояла прохладная осенняя погода. Деревья уже почти сбросили свои листья, и воздух был наполнен свежим запахом земли и увядающей листвы. Люди спешили по своим делам, закутавшись в тёплые шарфы и пальто. Кто-то держал в руках чашку горячего кофе, наслаждаясь его ароматом, а кто-то задумчиво смотрел на падающие листья, погружённый в свои мысли.",
-  "Утро начиналось с первых лучей солнца, которые мягко пробивались сквозь тонкие облака. Город просыпался, и улицы начинали оживать от звука машин и шагов прохожих. В парке уже гуляли молодые родители с детьми, а старушки сидели на лавочках и обсуждали последние новости. Ветер ласково качал ветви деревьев, играя с их листьями, которые тихо шуршали под ногами прохожих.",
-  "В тёмной комнате лишь слабый свет лампы освещал стол с разбросанными книгами. Тишина была абсолютной, за окном не было слышно ни звука. Листья шуршали где-то вдали, а человек за столом не отрывал взгляда от страницы, читая сложный текст. Время, казалось, остановилось, и ничто не могло нарушить этот момент сосредоточенности."
+  'Жизнь идет своим чередом, люди работают, учатся и стремятся к успеху. В каждом городе есть история, которая вдохновляет на подвиги. Природа радует своим величием, а семья поддерживает в трудные времена. Машины едут по дорогам, телефоны звенят, дети учат уроки, студенты готовятся к экзаменам. Книги и фильмы открывают новые горизонты. Музыка звучит на фестивалях, программы развивают технологии. Каждый день приносит новые возможности. Любовь движет миром, знание открывает двери. Планы строятся, проекты реализуются. Работа – это путь к достижению мечты.',
+  'На улице стояла прохладная осенняя погода. Деревья уже почти сбросили свои листья, и воздух был наполнен свежим запахом земли и увядающей листвы. Люди спешили по своим делам, закутавшись в тёплые шарфы и пальто. Кто-то держал в руках чашку горячего кофе, наслаждаясь его ароматом, а кто-то задумчиво смотрел на падающие листья, погружённый в свои мысли.',
+  'Утро начиналось с первых лучей солнца, которые мягко пробивались сквозь тонкие облака. Город просыпался, и улицы начинали оживать от звука машин и шагов прохожих. В парке уже гуляли молодые родители с детьми, а старушки сидели на лавочках и обсуждали последние новости. Ветер ласково качал ветви деревьев, играя с их листьями, которые тихо шуршали под ногами прохожих.',
+  'В тёмной комнате лишь слабый свет лампы освещал стол с разбросанными книгами. Тишина была абсолютной, за окном не было слышно ни звука. Листья шуршали где-то вдали, а человек за столом не отрывал взгляда от страницы, читая сложный текст. Время, казалось, остановилось, и ничто не могло нарушить этот момент сосредоточенности.',
 ]);
 
-let $textBlock = document.querySelector(".text-block") as HTMLElement | null;
+const $textBlock: HTMLElement | null = document.querySelector('.text-block');
 
 if (!$textBlock) {
   throw new Error('There is no element for ".text-block" selector');
@@ -84,7 +84,7 @@ const waitForTransitionend = ($el: HTMLElement) => {
     resolvePromise = res;
   });
 
-  $el.addEventListener("transitionend", (e) => {
+  $el.addEventListener('transitionend', (e) => {
     if (e.target !== $el) {
       return;
     }
@@ -105,19 +105,19 @@ const getButtonsHandler = (cb: (...args: any[]) => Promise<unknown>) => {
     lastCallStatus = currentCallStatus;
 
     typeWriter.abortWriting();
-    const onHidePromise = waitForTransitionend($textBlock!);
-    $textBlock!.classList.add("text-block--hidden");
+    const onHidePromise = waitForTransitionend($textBlock);
+    $textBlock.classList.add('text-block--hidden');
     await onHidePromise;
 
     if (currentCallStatus.aborted) {
       return;
     }
 
-    $textBlock!.innerHTML = "";
-    $textBlock!.classList.remove("text-block--hidden");
+    $textBlock.innerHTML = '';
+    $textBlock.classList.remove('text-block--hidden');
 
-    await waitForTransitionend($textBlock!);
-    console.log("await watForTransitionend");
+    await waitForTransitionend($textBlock);
+    console.log('await watForTransitionend');
 
     if (currentCallStatus.aborted) {
       return;
@@ -127,19 +127,51 @@ const getButtonsHandler = (cb: (...args: any[]) => Promise<unknown>) => {
   };
 };
 
-const buttonsHandler = getButtonsHandler(
-  async (buttonType: "next" | "prev") => {
-    if (buttonType === "next") {
-      typeWriter.writeText(texts.next, {});
-    } else {
-      typeWriter.writeText(texts.prev, {});
-    }
+const buttonsHandler = getButtonsHandler(async (buttonType: 'next' | 'prev') => {
+  if (buttonType === 'next') {
+    typeWriter.writeText(texts.next, {});
+  } else {
+    typeWriter.writeText(texts.prev, {});
+  }
+});
+
+const PREV_BTN_SELECTOR = '#prev';
+const NEXT_BTN_SELECTOR = '#next';
+
+const selectOrLogErr = (selector: string, onErr: { title: string; cause: Record<string, any> }, onSelected: ($el: HTMLElement) => void) => {
+  const $el: HTMLElement | null = document.querySelector(selector);
+
+  if (!$el) {
+    console.error(new Error(onErr.title), {
+      cause: onErr.cause,
+    });
+  } else {
+    onSelected($el);
+  }
+};
+
+selectOrLogErr(
+  NEXT_BTN_SELECTOR,
+  {
+    title: 'No $next found in the page',
+    cause: {
+      NEXT_BTN_SELECTOR,
+    },
+  },
+  ($nextBtn) => {
+    $nextBtn.addEventListener('click', async () => buttonsHandler('next'));
   }
 );
 
-document
-  .querySelector("#next")!
-  .addEventListener("click", async () => buttonsHandler("next"));
-document
-  .querySelector("#prev")!
-  .addEventListener("click", async () => buttonsHandler("prev"));
+selectOrLogErr(
+  NEXT_BTN_SELECTOR,
+  {
+    title: 'No $prevBtn found in the page',
+    cause: {
+      PREV_BTN_SELECTOR,
+    },
+  },
+  ($prevBtn) => {
+    $prevBtn.addEventListener('click', async () => buttonsHandler('prev'));
+  }
+);
