@@ -16,7 +16,7 @@
   },
   "lint-staged": {
     "*.js": "eslint --fix --ignore-pattern .gitignore",
-    "*.{css,html}": "stylelint --fix --ignore-path .gitignore"
+    "*.{css,scss}": "stylelint --fix --ignore-path .gitignore"
   },
   "devDependencies": {
     "@babel/eslint-parser": "^7.25.9",
