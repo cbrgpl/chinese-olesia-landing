@@ -4,10 +4,14 @@
     "target": "ESNext",
     "module": "esnext",
     "moduleResolution": "Node",
+    "tsBuildInfoFile": "./.cache/tsconfig.node.tsbuildinfo",
+    "skipLibCheck": true,
     "lib": ["ESNext"],
     "types": [ "node" ],
     "resolveJsonModule": true,
-    "allowSyntheticDefaultImports": true
+    "allowSyntheticDefaultImports": true,
+    "noEmit": true
   },
   "include": [ "vite.config.ts", "package.json", "vite_plugins/**/*" ]
+
 }

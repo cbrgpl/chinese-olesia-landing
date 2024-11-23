@@ -1,5 +1,3 @@
-
-
 // ;(async () => {
 //   for(const path of TEST_PATHS) {
 //     const file = await fs.readFile(path)
