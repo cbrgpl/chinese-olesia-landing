@@ -1,13 +1,15 @@
 {
   "compilerOptions": {
+    "sourceMap": true,
+    "outDir": "out",
     "composite": true,
-    "target": "ESNext",
-    "module": "esnext",
-    "moduleResolution": "Node",
+    "target": "ES2023",
+    "module": "ESNext",
+    "moduleResolution": "bundler",
     "lib": ["ESNext"],
     "types": [ "node" ],
     "resolveJsonModule": true,
     "allowSyntheticDefaultImports": true
   },
-  "include": [ "vite.config.ts", "package.json", "vite_plugins/**/*" ]
+  "include": [ "node_scripts/**/*.ts" ]
 }

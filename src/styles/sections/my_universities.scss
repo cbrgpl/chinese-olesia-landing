@@ -94,9 +94,6 @@
   }
 }
 
-.universities__modal {
-}
-
 .universities__modal-logo {
   display: block;
   margin: auto;
@@ -113,11 +110,10 @@
   }
 }
 
-.universities__modal-content {
-  & img:not(.universities__modal-logo) {
-    border-radius: utils.rem(8px);
-    border: 1px solid rgba(variables.$secondary-lightest, 1);
-  }
+.universities__modal-img {
+  border-radius: utils.rem(8px);
+  overflow: hidden;
+  border: 1px solid rgba(variables.$secondary-lightest, 1);
 }
 
 // https://habr.com/ru/sandbox/163605/?code=d7a09e1d4f5ad5f9acaaa50d65343834&state=2MWroJlpglNPOyEjY6N2XZ6a&hl=ru
