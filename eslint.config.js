@@ -19,6 +19,7 @@ const runInProd = (config) => (!isProd ? 'off' : config);
 const rulesJs = {
   ...js.configs.recommended.rules,
   ...configPrettier.rules,
+  'no-console': 'warn',
 };
 const rulesTs = {
   '@typescript-eslint/consistent-type-imports': 'error',
@@ -26,6 +27,7 @@ const rulesTs = {
   '@typescript-eslint/no-explicit-any': 'warn',
   '@typescript-eslint/no-non-null-assertion': 'off',
   '@typescript-eslint/no-dynamic-delete': 'warn',
+  'no-console': 'warn',
 };
 
 const localConfigIgnores = {

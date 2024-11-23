@@ -28,7 +28,6 @@ const intersectionObserver = new IntersectionObserver(
         const $target = entry.target as HTMLElement;
 
         const targetId = $target.getAttribute(OBSERVED_EL_ID_ATTR);
-        console.log('Во вьюпорте', targetId);
 
         if (targetId === null) {
           throw new Error(`Couldn't start loading an image bacause no id in ${OBSERVED_EL_ID_ATTR}`, { cause: { id: targetId } });
@@ -51,6 +50,17 @@ const intersectionObserver = new IntersectionObserver(
   }
 );
 
+const MIME_TYPES = new Map<string, string>([
+  ['svg', 'image/svg+xml'],
+  ['jpeg', 'image/jpeg'],
+  ['jpg', 'image/jpeg'],
+  ['webp', 'image/webp'],
+  ['png', 'image/png'],
+]);
+
+const getFileExt = (fileName: string) => fileName.split('.').pop() ?? '';
+const getFileMimeType = (fileName: string) => MIME_TYPES.get(getFileExt(fileName)) ?? '';
+
 // src;type,src;type,src;type
 type ISources = Array<{ src: string; type?: string }>;
 const parseSources = (sourcesRaw: string | null): ISources => {
@@ -59,8 +69,8 @@ const parseSources = (sourcesRaw: string | null): ISources => {
   }
 
   return sourcesRaw.split(',').map((source) => {
-    const [src = '', type = ''] = source.split(';');
-    return { src, type };
+    const [src = '', type = getFileMimeType(src)] = source.split(';');
+    return { src, type: type };
   });
 };
 
@@ -142,7 +152,6 @@ class CImage extends HTMLElement {
     $wrapper.style.height = '100%';
 
     const placeholderRequired = this.getAttribute('no-placeholder') === null;
-    console.log(this._id, this.getAttribute('no-placeholder'));
     if (placeholderRequired) {
       const $placeholder = document.createElement('div');
       $placeholder.classList.add('c-image__placeholder');
@@ -162,6 +171,25 @@ class CImage extends HTMLElement {
     intersectionObserver.observe($wrapper);
     return new Promise((resolve) => {
       imageInViewportUnlockersMap.set(this._id, () => resolve(null));
+    });
+  }
+
+  private _waitUntilLowQualityLoad($lowQualityImg: HTMLElement, rejectTimeout: number = 60000) {
+    return new Promise((resolve, reject) => {
+      const timeout = setTimeout(() => {
+        reject(
+          new Error('Low quality image has not been loaded', {
+            cause: {
+              timeout: rejectTimeout,
+            },
+          })
+        );
+      }, rejectTimeout);
+
+      $lowQualityImg?.addEventListener('load', () => {
+        clearTimeout(timeout);
+        resolve(null);
+      });
     });
   }
 
@@ -188,34 +216,26 @@ class CImage extends HTMLElement {
     const $wrapper = this._createWrapper(imageAttrs);
     $shadow.append($wrapper);
 
-    console.log('Жду пока буду во вьюпорте', this._id);
     await this._waitUntilImageInViewport($wrapper);
-    console.log('Я во вьюпорте', this._id);
 
     if (!imagesLoadingAvailable) {
-      console.log('Жду пока разрешат загрузку', this._id);
       await waitUntilLoadingAllowed();
     }
 
-    console.log('Отображаю плохого качества картинку', this._id);
     const $lowQualityImg = this._createLowQualityImg(imageAttrs);
     if ($lowQualityImg) {
       $wrapper.appendChild($lowQualityImg);
+      await this._waitUntilLowQualityLoad($lowQualityImg);
     }
 
-    $lowQualityImg?.addEventListener('load', () => {
-      const $picture = this._createPictureEl(imageAttrs);
-      const $pictureImg = $picture.lastChild;
-      $pictureImg?.addEventListener('load', async () => {
-        console.log('Отображаю хорошего качества картинку', this._id);
-
-        if ($lowQualityImg) {
-          console.log('Заменяю плохую картинку на хорошую', this._id);
-          $wrapper.replaceChild($picture, $lowQualityImg);
-        } else {
-          $wrapper.append($picture);
-        }
-      });
+    const $picture = this._createPictureEl(imageAttrs);
+    const $pictureImg = $picture.lastChild;
+    $pictureImg?.addEventListener('load', async () => {
+      if ($lowQualityImg) {
+        $wrapper.replaceChild($picture, $lowQualityImg);
+      } else {
+        $wrapper.append($picture);
+      }
     });
   }
 }
