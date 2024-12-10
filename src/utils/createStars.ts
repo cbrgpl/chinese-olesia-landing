@@ -1,0 +1,25 @@
+const COLORIZED_STAR_CLASS = 'stars-group__star--colorized';
+const STAR_CLASS = 'stars-group__star';
+const STAR_HTML_TEMPLATE = `<div class="${STAR_CLASS}">
+  <svg width="16" height="16" viewBox="0 0 18 16" xmlns="http://www.w3.org/2000/svg">
+    <path
+      d="M5.55623 4.83027L7.635 0.424373C7.69552 0.296865 7.78858 0.189619 7.90377 0.114662C8.01895 0.0397048 8.1517 0 8.28712 0C8.42255 0 8.55529 0.0397048 8.67048 0.114662C8.78566 0.189619 8.87873 0.296865 8.93924 0.424373L11.018 4.83027L15.6652 5.54101C15.7993 5.56057 15.9254 5.6194 16.0292 5.71079C16.133 5.80217 16.2103 5.92243 16.2523 6.05783C16.2942 6.19324 16.2992 6.33833 16.2665 6.47655C16.2339 6.61477 16.165 6.74056 16.0677 6.83954L12.7055 10.2669L13.4993 15.109C13.6009 15.7305 12.9768 16.2038 12.4431 15.9107L8.28712 13.6235L4.13038 15.9107C3.59748 16.2046 2.97337 15.7305 3.07499 15.1082L3.86873 10.2661L0.506528 6.8387C0.409699 6.73965 0.341216 6.61399 0.308863 6.47601C0.27651 6.33804 0.281585 6.19328 0.32351 6.05819C0.365435 5.9231 0.442529 5.80309 0.54603 5.71182C0.64953 5.62054 0.775284 5.56166 0.909 5.54185L5.55623 4.83027Z"
+      fill="currentColor"
+    />
+  </svg>
+</div>`;
+export const createScoreStars = (isColorized: (inx: number) => boolean) => {
+  const $starsGroup = document.createElement('div');
+  $starsGroup.classList.add('stars-group');
+
+  const MAX_STARS = 5;
+  $starsGroup.innerHTML = STAR_HTML_TEMPLATE.repeat(MAX_STARS);
+
+  $starsGroup.querySelectorAll(`.${STAR_CLASS}`).forEach(($el, inx) => {
+    if (isColorized(inx)) {
+      $el.classList.add(COLORIZED_STAR_CLASS);
+    }
+  });
+
+  return $starsGroup;
+};

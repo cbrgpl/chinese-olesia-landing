@@ -201,7 +201,6 @@ requestIdleCallback(() => {
 
     const content = (() => {
       if (modalContentMap.has(university)) {
-        console.log('старый');
         return modalContentMap.get(university)!;
       }
 
@@ -216,7 +215,6 @@ requestIdleCallback(() => {
 
   document.querySelectorAll('.universities__card-button').forEach(($btn) => {
     $btn.addEventListener('click', () => {
-      console.log(($btn as HTMLElement).dataset);
       placeUniversityContent(($btn as HTMLElement).dataset['university'] as UUniversities);
 
       if (modal.visible) {

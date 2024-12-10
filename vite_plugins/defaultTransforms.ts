@@ -18,11 +18,11 @@ const toWebp: ITransform = {
 const toLowQualityCore = async (file: Buffer): Promise<Uint8Array> => {
   const proccessedFile = await sharp(file)
     .resize({
-      width: 60,
+      width: 75,
     })
-    .blur(6)
+    // .blur(6)
     .jpeg({
-      quality: 80,
+      quality: 100,
     })
     .toBuffer();
 

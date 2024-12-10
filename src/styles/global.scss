@@ -4,6 +4,7 @@
 
 * {
   box-sizing: border-box;
+  -webkit-tap-highlight-color: transparent;
 }
 
 @supports (scrollbar-color: auto) {
@@ -129,4 +130,36 @@ p {
 
 img {
   user-select: none;
+}
+
+.stars-group {
+  display: flex;
+}
+
+.stars-group__star {
+  color: variables.$black-extra;
+  line-height: 1;
+  height: utils.rem(16px);
+  aspect-ratio: 1;
+
+  &:not(:last-child) {
+    margin-right: utils.rem(16px);
+  }
+
+  &--colorized {
+    color: variables.$secondary;
+    position: relative;
+
+    &::before {
+      content: '';
+      position: absolute;
+      right: 50%;
+      bottom: 50%;
+      transform: translate(50%, 50%);
+      background: rgba(variables.$secondary, 0.4);
+      filter: blur(5px);
+      width: utils.rem(10px);
+      aspect-ratio: 1;
+    }
+  }
 }

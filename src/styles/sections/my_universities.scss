@@ -116,8 +116,8 @@
   border: 1px solid rgba(variables.$secondary-lightest, 1);
 }
 
-// https://habr.com/ru/sandbox/163605/?code=d7a09e1d4f5ad5f9acaaa50d65343834&state=2MWroJlpglNPOyEjY6N2XZ6a&hl=ru
 @media (pointer: fine), (pointer: none) {
+  // https://habr.com/ru/sandbox/163605/?code=d7a09e1d4f5ad5f9acaaa50d65343834&state=2MWroJlpglNPOyEjY6N2XZ6a&hl=ru
   .universities__card-footer {
     flex-direction: row;
     align-items: center;
