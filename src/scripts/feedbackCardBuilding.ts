@@ -49,16 +49,47 @@ const getCardEl = <T extends HTMLElement = HTMLElement>($root: HTMLElement, sele
   return $el as T;
 };
 
-interface IExtrasStrategy {
-  modifyCard(feedback: IFeedback, $card: HTMLElement): void;
-  getTypeIcon(): string;
-  getAltForTypeIcon(): string;
-  importCache(): Promise<IModuleWithCache>;
+abstract class ExtrasStrategy {
+  protected readonly _loadCache: () => Promise<IModuleWithCache>;
+
+  constructor(loadCache: () => Promise<IModuleWithCache>) {
+    this._loadCache = loadCache;
+  }
+
+  abstract modifyCard(feedback: IFeedback, $card: HTMLElement): void;
+  abstract getTypeIcon(): string;
+  abstract getAltForTypeIcon(): string;
+  abstract fetchFeedbacks(): Promise<IFeedback[] | null>;
+
+  async importCache(): Promise<IFeedback[]> {
+    try {
+      const module: IModuleWithCache = await this._loadCache();
+      return module.feedbacks;
+    } catch (err) {
+      console.group('Some error happend when try to import cached feedbacks');
+      console.error(err);
+      console.groupEnd();
+
+      return [];
+    }
+  }
+
+  protected async _fetchFeedbacksDecorator(fetchIt: () => Promise<IFeedback[]>) {
+    try {
+      return await fetchIt();
+    } catch (err) {
+      console.groupCollapsed('An error happend when tried to fetch avito feedbacks');
+      console.error(err);
+      console.groupEnd();
+
+      return this.importCache();
+    }
+  }
 }
 
-const extrasStrategyVk = new (class ExtrasStrategyVk implements IExtrasStrategy {
-  importCache(): Promise<IModuleWithCache> {
-    return import('@/static/vkCachedFeedbacks');
+const extrasStrategyVk = new (class ExtrasStrategyVk extends ExtrasStrategy {
+  constructor() {
+    super(() => import('@/static/vkCachedFeedbacks'));
   }
 
   getTypeIcon() {
@@ -79,6 +110,12 @@ const extrasStrategyVk = new (class ExtrasStrategyVk implements IExtrasStrategy 
     const $cardTitleWrapper = getCardEl($card, '.feedback__card-title-wrapper');
     $cardTitleWrapper.append($likes);
   }
+
+  fetchFeedbacks() {
+    return this._fetchFeedbacksDecorator(async () => {
+      throw new Error('Not able to fetch feedbacks from VK...');
+    });
+  }
 })();
 
 const assertExtra: (extra: Record<string, any> | null) => asserts extra is NonNullable<typeof extra> = (extra: Record<string, any> | null) => {
@@ -91,9 +128,29 @@ const assertExtra: (extra: Record<string, any> | null) => asserts extra is NonNu
   }
 };
 
-const extrasStrategyAvito = new (class ExtrasStrategyAvito implements IExtrasStrategy {
-  importCache(): Promise<IModuleWithCache> {
-    return import('@/static/avitoCachedFeedbacks');
+type IAvitoApiFeedback = {
+  type: string;
+  value: {
+    title: string;
+    avatar: string;
+    rated: string;
+    itemTitle: string;
+    stageTitle: string;
+    textSections: Array<{ text: string }>;
+    id: number;
+    score: number;
+  };
+};
+const extrasStrategyAvito = new (class ExtrasStrategyAvito extends ExtrasStrategy {
+  private readonly _LOCAL_STORAGE_NAMES = {
+    FEEDBACKS: 'AVITO_FEEDBACKS',
+    TIME_OF_SETTING: 'AVITO_TIME_OF_SETTING',
+  };
+
+  private readonly _AVITO_STORAGE_LIFESPAN = 1 * 1000 * 60 * 60 * 24;
+
+  constructor() {
+    super(() => import('@/static/avitoCachedFeedbacks'));
   }
 
   getTypeIcon() {
@@ -113,8 +170,129 @@ const extrasStrategyAvito = new (class ExtrasStrategyAvito implements IExtrasStr
     const $cardTitleWrapper = getCardEl($card, '.feedback__card-title-wrapper');
     $cardTitleWrapper.append($score);
   }
+
+  async fetchFeedbacks() {
+    return this._fetchFeedbacksDecorator(async () => {
+      const storageCache = this._getLocalStorageCache();
+      if (storageCache !== null) {
+        const { timeOfSetting, feedbacks } = storageCache;
+
+        if (Date.now() - timeOfSetting >= this._AVITO_STORAGE_LIFESPAN) {
+          this._clearLocalStorageCache();
+        } else {
+          return Promise.resolve(feedbacks);
+        }
+      }
+
+      const response = await fetch('https://www.avito.ru/web/6/user/14ae88a1d924c65dbfa45fc3ebc181d1/ratings', {
+        mode: 'no-cors',
+      });
+
+      if (response.status !== 200) {
+        throw new Error('Caught not successful status from AvitoAPI', {
+          cause: {
+            status: response.status,
+          },
+        });
+      }
+
+      const body: { entries: IAvitoApiFeedback[] } = await response.json();
+      const feedbacks = body.entries.filter((feedback) => feedback.type === 'rating').map((feedback) => this._formatFeedback(feedback));
+
+      this._saveLocalStorageCache(feedbacks);
+
+      return feedbacks;
+    });
+  }
+
+  private _formatFeedback(apiFeedback: IAvitoApiFeedback): IFeedback {
+    return {
+      avatar: apiFeedback.value.avatar,
+      date: this._formatFromAvitoDate(apiFeedback.value.rated),
+      name: apiFeedback.value.title,
+      text: apiFeedback.value.textSections.reduce((text: string, paragraph, inx) => {
+        return text + (inx === 0 ? '' : '\n') + paragraph.text;
+      }, ''),
+      origin: EFeedbackOrigins.AVITO,
+      extras: {
+        vkExtras: null,
+        avitoExtras: {
+          score: apiFeedback.value.score,
+        },
+      },
+    };
+  }
+
+  /** @description avito's format is "26 июля 2024", this methods formats it to MM.DD.YYYY*/
+  private _formatFromAvitoDate(date: string) {
+    const [day, month, year] = date.split(' ');
+    const MONTHS_IN_RUS: Record<string, any> = {
+      января: '01',
+      февраля: '02',
+      марта: '03',
+      апреля: '04',
+      мая: '05',
+      июня: '06',
+      июля: '07',
+      августа: '08',
+      сентября: '09',
+      октября: '10',
+      ноября: '11',
+      декабря: '12',
+    };
+
+    return `${MONTHS_IN_RUS[month!]}.${day}.${year}`;
+  }
+
+  private _clearLocalStorageCache() {
+    localStorage.removeItem(this._LOCAL_STORAGE_NAMES.FEEDBACKS);
+    localStorage.removeItem(this._LOCAL_STORAGE_NAMES.TIME_OF_SETTING);
+  }
+
+  private _getLocalStorageCache() {
+    const timeOfSetting = localStorage.getItem(this._LOCAL_STORAGE_NAMES.TIME_OF_SETTING);
+    const feedbacks = localStorage.getItem(this._LOCAL_STORAGE_NAMES.FEEDBACKS);
+
+    if (timeOfSetting === null || feedbacks === null) {
+      return null;
+    }
+
+    try {
+      return {
+        timeOfSetting: +timeOfSetting,
+        feedbacks: JSON.parse(feedbacks) as IFeedback[],
+      };
+    } catch (err) {
+      console.groupCollapsed('An error happend when tried to get cached avito feedbacks from local storage');
+      console.error(err);
+      console.groupEnd();
+
+      this._clearLocalStorageCache();
+
+      return null;
+    }
+  }
+
+  private _saveLocalStorageCache(feedbacks: IFeedback[]) {
+    localStorage.setItem(this._LOCAL_STORAGE_NAMES.FEEDBACKS, JSON.stringify(feedbacks));
+    localStorage.setItem(this._LOCAL_STORAGE_NAMES.TIME_OF_SETTING, `${Date.now()}`);
+  }
 })();
 
+export const fetchFeedbacks = async (): Promise<IFeedback[]> => {
+  const promises = [extrasStrategyAvito.fetchFeedbacks(), extrasStrategyVk.fetchFeedbacks()];
+
+  const results = await Promise.allSettled(promises);
+
+  return results.reduce<IFeedback[]>((feedbacks, res) => {
+    console.log(res);
+    if (res.status === 'fulfilled') {
+      feedbacks.push(...res.value);
+    }
+
+    return feedbacks;
+  }, []);
+};
 const getStrategy = (origin: EFeedbackOrigins) => {
   switch (origin) {
     case EFeedbackOrigins.AVITO:
@@ -129,19 +307,16 @@ const getStrategy = (origin: EFeedbackOrigins) => {
       });
   }
 };
-export const loadCache = (origin: EFeedbackOrigins) => {
-  const strategy: IExtrasStrategy = getStrategy(origin);
-  return strategy.importCache();
-};
+
 export class CardBuildingContext {
-  private _extrasStrategy: IExtrasStrategy | null = null;
+  private _extrasStrategy: ExtrasStrategy | null = null;
   private readonly _modalManipulators: IModalManipulators;
 
   constructor(modalManipulators: IModalManipulators) {
     this._modalManipulators = modalManipulators;
   }
 
-  private _strategyNotNull(strategy: IExtrasStrategy | null): asserts strategy {
+  private _strategyNotNull(strategy: ExtrasStrategy | null): asserts strategy {
     if (!strategy) {
       throw new Error('No extras strategy setted before build started', {
         cause: {
@@ -185,7 +360,6 @@ export class CardBuildingContext {
 
     const $viewBtn = getCardEl($card, '.feedback__view-btn');
     $viewBtn.addEventListener('click', () => {
-      // TODO Написать реализацию
       this._modalManipulators.show(feedback);
     });
 

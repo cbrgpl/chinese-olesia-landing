@@ -1,15 +1,10 @@
-// const fetchFeedbacks = (): Promise<IFeedback[]> => {};
-// import { vkCachedFeedbacks } from '@/static/vkCachedFeedbacks';
-// import { avitoCachedFeedbacks } from '@/static/avitoCachedFeedbacks';
-
 import Swiper from 'swiper';
 import { Navigation, Pagination, Virtual } from 'swiper/modules';
 
 import { Modal } from '@/libs/modal';
 
 import type { IFeedback } from '@/static/feedbackUtils';
-import { EFeedbackOrigins } from '@/static/feedbackUtils';
-import { CardBuildingContext, loadCache, type IModalManipulators } from './feedbackCardBuilding';
+import { CardBuildingContext, fetchFeedbacks, type IModalManipulators } from './feedbackCardBuilding';
 import { shuffleArr } from '@/utils/shuffleArr';
 
 Swiper.use([Navigation, Pagination, Virtual]);
@@ -83,10 +78,7 @@ const initModal = (): IModalManipulators => {
 };
 
 const getFeedbacks = async () => {
-  const { feedbacks: feedbacksAvito } = await loadCache(EFeedbackOrigins.AVITO);
-  const { feedbacks: feedbacksVk } = await loadCache(EFeedbackOrigins.VK);
-
-  const feedbacks = [...feedbacksAvito, ...feedbacksVk];
+  const feedbacks = await fetchFeedbacks();
   shuffleArr(feedbacks);
   return feedbacks;
 };
