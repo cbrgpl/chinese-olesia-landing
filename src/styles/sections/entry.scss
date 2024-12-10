@@ -22,6 +22,10 @@
   order: 2;
 }
 
+.entry__button-wrapper {
+  order: 4;
+}
+
 .entry__button {
   background: variables.$primary;
   color: variables.$white;
@@ -30,7 +34,6 @@
   padding: utils.rem(20px) utils.rem(80px); // utils.rem(16px) utils.rem(80px)
   cursor: pointer;
   box-shadow: 0 12px 25px -10px variables.$primary;
-  order: 4;
 }
 
 .entry__button:hover {
