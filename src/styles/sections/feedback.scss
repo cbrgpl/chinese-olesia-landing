@@ -1,0 +1,198 @@
+@use 'sass:color';
+@use './../utils';
+@use './../variables';
+
+.feedback__cards {
+  display: flex;
+  gap: 0 utils.rem(10px);
+  max-width: 100%;
+  overflow: auto;
+}
+
+.feedback__card {
+  width: utils.rem(400px);
+  border-radius: 10px;
+  border: 2px solid #ddd;
+  padding: utils.rem(20px) utils.rem(30px);
+}
+
+.feedback__card:hover {
+  border-color: rgba(variables.$primary, 0.5);
+}
+
+.feedback__card:focus-within {
+  border-color: variables.$primary;
+}
+
+.feedback__card-header {
+  display: flex;
+  align-items: center;
+  margin-bottom: utils.rem(20px);
+}
+
+.feedback__avatar {
+  border-radius: 100%;
+  object-fit: cover;
+  object-position: top;
+  font-size: utils.rem(10px);
+  display: flex;
+  align-items: center;
+  text-align: center;
+}
+
+.feedback__card-avatar {
+  width: utils.rem(75px);
+  height: utils.rem(75px);
+  margin-inline-end: utils.rem(16px);
+}
+
+.feedback__card-title-wrapper {
+  display: flex;
+  flex-direction: column;
+  margin-inline-end: utils.rem(8px);
+}
+
+.feedback__card-vk-likes-wrapper {
+  display: flex;
+  align-items: center;
+  font-weight: 600;
+  color: red;
+  user-select: none;
+}
+
+.feedback__card-vk-likes {
+  margin-inline-start: utils.rem(3px);
+  width: utils.rem(16px);
+  height: utils.rem(16px);
+}
+
+.feedback__card-title {
+  margin-bottom: auto;
+}
+
+.feedback__card-title + * {
+  margin-top: utils.rem(4px);
+}
+
+.feedback__card-type-icon {
+  width: utils.rem(30px);
+  height: utils.rem(30px);
+  align-self: flex-start;
+  margin-inline-start: auto;
+}
+
+.feedback__card-body {
+  margin-bottom: utils.rem(30px);
+  color: #0b132a;
+  line-height: utils.rem(30px);
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 4;
+  overflow: hidden;
+}
+
+.feedback__card-footer {
+  display: flex;
+  align-items: center;
+}
+
+.feedback__card-date {
+  font-family: monospace;
+  color: variables.$black-extra;
+  font-size: utils.rem(12px);
+  font-weight: 600;
+}
+
+$btn-border-width: 1px;
+
+// uses mix gradint with $secondary color
+.feedback__gradient-wrapper {
+  padding: $btn-border-width;
+  overflow: hidden;
+  position: relative;
+  z-index: 1;
+  background: variables.$secondary;
+
+  // the gradient
+  &::before {
+    content: '';
+    background: linear-gradient(0deg, variables.$secondary 28%, variables.$primary 100%);
+    opacity: 0.25;
+    position: absolute;
+    z-index: -1;
+    width: 100%;
+    height: 100%;
+    left: 0;
+    top: 0;
+  }
+
+  // overlaps the gradient to make the gradient visible as border
+  &::after {
+    content: '';
+    background: variables.$secondary;
+    z-index: 0;
+    position: absolute;
+    width: calc(100% - #{$btn-border-width * 2});
+    height: calc(100% - #{$btn-border-width * 2});
+    left: 1px;
+    top: 1px;
+  }
+}
+
+.feedback__view-btn {
+  z-index: 1;
+  position: relative;
+  width: 100%;
+  padding: utils.rem(15px) utils.rem(25px);
+  color: variables.$white;
+  background: transparent;
+  font-weight: bold;
+}
+
+.feedback__gradient-wrapper,
+.feedback__gradient-wrapper::before,
+.feedback__gradient-wrapper::after,
+.feedback__gradient-wrapper > .feedback__view-btn {
+  border-radius: 4px;
+}
+
+.feedback__gradient-wrapper,
+.feedback__gradient-wrapper::after {
+  transition: all 140ms;
+}
+
+.feedback__gradient-wrapper:hover,
+.feedback__gradient-wrapper:hover::after {
+  background: color.adjust(variables.$secondary, $lightness: -5%);
+}
+
+.feedback-modal__window {
+  min-height: utils.rem(400px);
+}
+
+.feedback-modal__avatar {
+  width: utils.rem(160px);
+  height: utils.rem(160px);
+  margin-inline-end: utils.rem(16px);
+}
+
+.feedback-modal__name {
+  font-size: utils.rem(20px);
+}
+
+.feedback-modal__content {
+  text-align: justify;
+  line-height: 1.5;
+
+  &::first-line {
+    font-weight: 600;
+  }
+}
+
+@media (pointer: fine), (pointer: none) {
+  // https://habr.com/ru/sandbox/163605/?code=d7a09e1d4f5ad5f9acaaa50d65343834&state=2MWroJlpglNPOyEjY6N2XZ6a&hl=ru
+  .feedback__gradient-wrapper {
+    width: utils.rem(180px);
+    margin-inline-start: auto;
+  }
+}

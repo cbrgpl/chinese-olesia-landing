@@ -49,21 +49,17 @@ $modal-bottom-shift: #{utils.rem(20px)};
 .modal__header {
   display: flex;
   align-items: center;
-}
-
-.modal__title {
   margin-bottom: utils.rem(20px);
 }
 
 .modal__close-btn {
-  position: absolute;
   width: 24px;
   height: 24px;
   padding: 6px;
-  right: utils.rem(16px);
-  top: utils.rem(16px);
   display: flex;
   background: transparent;
+  margin-inline-start: auto;
+  align-self: flex-start;
 }
 
 .modal__content {
