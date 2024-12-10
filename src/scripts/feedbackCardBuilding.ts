@@ -285,7 +285,6 @@ export const fetchFeedbacks = async (): Promise<IFeedback[]> => {
   const results = await Promise.allSettled(promises);
 
   return results.reduce<IFeedback[]>((feedbacks, res) => {
-    console.log(res);
     if (res.status === 'fulfilled') {
       feedbacks.push(...res.value);
     }
