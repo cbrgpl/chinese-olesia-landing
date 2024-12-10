@@ -1,7 +1,7 @@
 @use '@/styles/utils';
 @use '@/styles/variables';
 
-$modal-bottom-shift: #{utils.rem(20px)};
+$modal-bottom-shift: #{utils.rem(50px)};
 
 .modal {
   background: rgba(#000, 0.4);
@@ -24,7 +24,7 @@ $modal-bottom-shift: #{utils.rem(20px)};
 .modal__window {
   width: 100%;
   max-width: utils.rem(560px);
-  max-height: calc(#{utils.rem(320px)} + #{$modal-bottom-shift});
+  max-height: calc(#{utils.rem(520px)} + #{$modal-bottom-shift});
   background: variables.$white;
   padding: utils.rem(12px);
   padding-bottom: calc(#{utils.rem(12px)} + $modal-bottom-shift);
