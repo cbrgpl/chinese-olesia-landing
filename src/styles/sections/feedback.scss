@@ -10,10 +10,13 @@
 }
 
 .feedback__card {
+  display: flex;
+  flex-direction: column;
   width: utils.rem(400px);
   border-radius: 10px;
   border: 2px solid #ddd;
   padding: utils.rem(10px) utils.rem(15px);
+  height: auto;
 }
 
 .feedback__card:hover {
@@ -98,6 +101,7 @@
 .feedback__card-footer {
   display: flex;
   align-items: center;
+  margin-top: auto;
 }
 
 .feedback__card-date {
