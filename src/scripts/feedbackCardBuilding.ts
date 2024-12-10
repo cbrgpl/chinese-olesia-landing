@@ -170,10 +170,12 @@ export class CardBuildingContext {
 
     const $title = getCardEl($card, '.feedback__card-title');
     $title.innerText = feedback.name;
+    $title.setAttribute('title', feedback.name);
 
     const $typeIcon = getCardEl<HTMLImageElement>($card, '.feedback__card-type-icon');
     $typeIcon.src = this._extrasStrategy.getTypeIcon();
     $typeIcon.alt = this._extrasStrategy.getAltForTypeIcon();
+    $typeIcon.setAttribute('title', $typeIcon.alt);
 
     const $body = getCardEl($card, '.feedback__card-body');
     $body.innerText = feedback.text;
