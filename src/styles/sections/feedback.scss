@@ -68,6 +68,10 @@
 
 .feedback__card-title {
   margin-bottom: auto;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  overflow: hidden;
 }
 
 .feedback__card-title + * {
