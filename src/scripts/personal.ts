@@ -141,7 +141,7 @@ requestIdleCallback(() => {
     time: 15,
   });
 
-  new Swiper('.swiper ', {
+  new Swiper('#personal-slider', {
     loop: true,
     pagination: {
       el: '.swiper-pagination',

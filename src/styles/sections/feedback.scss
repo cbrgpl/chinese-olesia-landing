@@ -13,7 +13,7 @@
   width: utils.rem(400px);
   border-radius: 10px;
   border: 2px solid #ddd;
-  padding: utils.rem(20px) utils.rem(30px);
+  padding: utils.rem(10px) utils.rem(15px);
 }
 
 .feedback__card:hover {
@@ -101,17 +101,19 @@
   color: variables.$black-extra;
   font-size: utils.rem(12px);
   font-weight: 600;
+  margin-inline-end: utils.rem(8px);
 }
 
 $btn-border-width: 1px;
 
-// uses mix gradint with $secondary color
+// mixes gradient with $secondary color
 .feedback__gradient-wrapper {
   padding: $btn-border-width;
   overflow: hidden;
   position: relative;
   z-index: 1;
   background: variables.$secondary;
+  margin-inline-start: auto;
 
   // the gradient
   &::before {
@@ -166,6 +168,58 @@ $btn-border-width: 1px;
   background: color.adjust(variables.$secondary, $lightness: -5%);
 }
 
+.feedback-slider__pagination-wrapper {
+  position: relative;
+  margin-top: utils.rem(15px);
+  padding-top: utils.rem(20px);
+}
+
+.feedback-slider__pagination {
+  right: 0;
+  top: 0;
+  text-align: end;
+  padding-inline-end: utils.rem(60px);
+  color: variables.$primary;
+  font-weight: 600;
+}
+
+.feedback-slider__buttons-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: utils.rem(24px) 0;
+  margin-top: utils.rem(30px);
+  padding-bottom: utils.rem(10px);
+}
+
+.feedback-slider__btn {
+  width: 70%;
+  max-width: utils.rem(320px);
+  padding: utils.rem(20px);
+  border-radius: utils.rem(12px);
+  position: static;
+  box-shadow: 0 0 10px 3px rgba(variables.$primary, 0.4);
+  transition: all 120ms ease-out;
+
+  & > svg {
+    width: auto;
+    height: auto;
+  }
+
+  &--prev {
+    background: transparent;
+    border-color: variables.$primary;
+    color: variables.$primary;
+    margin-inline: utils.rem(15px) auto;
+  }
+
+  &--next {
+    background: variables.$primary;
+    border-color: transparent;
+    color: variables.$white;
+    margin-inline: auto utils.rem(20px);
+  }
+}
+
 .feedback-modal__window {
   min-height: utils.rem(400px);
 }
@@ -189,10 +243,44 @@ $btn-border-width: 1px;
   }
 }
 
+@media screen and (width >= 650px) {
+  .feedback-slider__buttons-wrapper {
+    flex-direction: row;
+    justify-content: flex-end;
+    gap: 0 utils.rem(35px);
+  }
+
+  .feedback-slider__btn {
+    &--prev,
+    &--next {
+      margin-inline: unset;
+    }
+  }
+}
+
 @media (pointer: fine), (pointer: none) {
   // https://habr.com/ru/sandbox/163605/?code=d7a09e1d4f5ad5f9acaaa50d65343834&state=2MWroJlpglNPOyEjY6N2XZ6a&hl=ru
   .feedback__gradient-wrapper {
     width: utils.rem(180px);
     margin-inline-start: auto;
+  }
+
+  .feedback-slider__buttons-wrapper {
+    flex-direction: row;
+    justify-content: flex-end;
+    gap: 0 utils.rem(20px);
+    margin-inline-end: utils.rem(160px);
+  }
+
+  .feedback-slider__btn {
+    width: utils.rem(60px);
+    height: utils.rem(60px);
+    padding: utils.rem(20px);
+    border-radius: 100%;
+
+    &--prev,
+    &--next {
+      margin-inline: unset;
+    }
   }
 }

@@ -2,6 +2,9 @@
 // import { vkCachedFeedbacks } from '@/static/vkCachedFeedbacks';
 // import { avitoCachedFeedbacks } from '@/static/avitoCachedFeedbacks';
 
+import Swiper from 'swiper';
+import { Navigation, Pagination, Virtual } from 'swiper/modules';
+
 import { Modal } from '@/libs/modal';
 
 import type { IFeedback } from '@/static/feedbackUtils';
@@ -9,6 +12,55 @@ import { EFeedbackOrigins } from '@/static/feedbackUtils';
 import { CardBuildingContext, loadCache, type IModalManipulators } from './feedbackCardBuilding';
 import { shuffleArr } from '@/utils/shuffleArr';
 
+Swiper.use([Navigation, Pagination, Virtual]);
+
+const initSlider = (feedbacks: IFeedback[], cardBuildingContext: CardBuildingContext) => {
+  new Swiper('#feedback-slider', {
+    slidesPerView: 1,
+    spaceBetween: 20,
+
+    pagination: {
+      el: '.swiper-pagination',
+      type: 'fraction',
+    },
+
+    navigation: {
+      nextEl: '.swiper-button-next',
+      prevEl: '.swiper-button-prev',
+    },
+
+    virtual: {
+      enabled: true,
+      slides: feedbacks,
+      addSlidesAfter: 1,
+      renderSlide: (feedback: IFeedback) => {
+        cardBuildingContext.setStrategy(feedback.origin);
+        const $card = cardBuildingContext.build(feedback);
+        $card.classList.add('swiper-slide');
+        return $card;
+      },
+    },
+
+    breakpoints: {
+      720: {
+        slidesPerView: 2,
+        spaceBetween: 20,
+
+        virtual: {
+          addSlidesAfter: 2,
+        },
+      },
+      1200: {
+        slidesPerView: 3,
+        spaceBetween: 50,
+
+        virtual: {
+          addSlidesAfter: 3,
+        },
+      },
+    },
+  });
+};
 const initModal = (): IModalManipulators => {
   const modal = new Modal('#feedback-modal');
 
@@ -29,24 +81,21 @@ const initModal = (): IModalManipulators => {
     },
   };
 };
-const appendCards = async (modalManipulators: IModalManipulators) => {
+
+const getFeedbacks = async () => {
   const { feedbacks: feedbacksAvito } = await loadCache(EFeedbackOrigins.AVITO);
   const { feedbacks: feedbacksVk } = await loadCache(EFeedbackOrigins.VK);
 
-  const cardBuildingContext = new CardBuildingContext(modalManipulators);
-
-  const $cards: HTMLElement[] = [];
-
-  for (const feedback of [...feedbacksAvito, ...feedbacksVk]) {
-    cardBuildingContext.setStrategy(feedback.origin);
-    const $card = cardBuildingContext.build(feedback);
-    $cards.push($card);
-  }
-
-  shuffleArr($cards);
-  document.querySelector('.feedback__cards')?.append(...$cards);
+  const feedbacks = [...feedbacksAvito, ...feedbacksVk];
+  shuffleArr(feedbacks);
+  return feedbacks;
 };
-(async () => {
-  const modalManipulators = initModal();
-  appendCards(modalManipulators);
+
+(() => {
+  requestIdleCallback(async () => {
+    const modalManipulators = initModal();
+    const feedbacks = await getFeedbacks();
+    const cardBuildingContext = new CardBuildingContext(modalManipulators);
+    initSlider(feedbacks, cardBuildingContext);
+  });
 })();
