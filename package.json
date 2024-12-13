@@ -6,7 +6,7 @@
   "author": "cbrgpl",
   "license": "ISC",
   "scripts": {
-    "dev": "vite",
+    "dev": "vite --host",
     "check-types": "tsc --project tsconfig.src.json && tsc --project tsconfig.node.json",
     "build": "vite build",
     "build--watch": "vite build --watch",
