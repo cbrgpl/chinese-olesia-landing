@@ -14,6 +14,27 @@ if (!window.requestIdleCallback) {
   }) as any;
 }
 
+const addVersionLine = () => {
+  const VERSION = '0.01';
+  const $div = document.createElement('div');
+  $div.style.background = 'red';
+  $div.innerText = `Версия ${VERSION}`;
+  $div.style.position = 'absolute';
+  $div.style.top = '0';
+  $div.style.left = '0';
+  $div.style.width = '100vw';
+  $div.style.color = '#fff';
+  $div.style.fontFamily = 'monospace';
+  $div.style.fontWeight = '600';
+  $div.style.textAlign = 'center';
+  $div.style.zIndex = '999999';
+  document.body.append($div);
+};
+
+if (import.meta.env.DEV) {
+  addVersionLine();
+}
+
 window.addEventListener('load', async () => {
   await import('./styles/index.scss' as any);
   allowImagesLoading();
