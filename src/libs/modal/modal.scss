@@ -1,7 +1,8 @@
 @use '@/styles/utils';
 @use '@/styles/variables';
 
-$modal-bottom-shift: #{utils.rem(50px)};
+$modal-bottom-shift: #{utils.rem(12px)};
+$mask-padding: #{utils.rem(16px)};
 
 .modal {
   background: rgba(#000, 0.4);
@@ -10,11 +11,12 @@ $modal-bottom-shift: #{utils.rem(50px)};
   left: 0;
   z-index: 1;
   width: 100vw;
-  height: 100vh;
+  height: 100dvh;
   display: flex;
   align-items: flex-end;
   transition: opacity 160ms;
   user-select: none;
+  padding: $mask-padding;
 }
 
 .modal--hidden {
@@ -24,16 +26,16 @@ $modal-bottom-shift: #{utils.rem(50px)};
 .modal__window {
   width: 100%;
   max-width: utils.rem(560px);
-  max-height: calc(#{utils.rem(520px)} + #{$modal-bottom-shift});
+  max-height: utils.rem(520px);
   background: variables.$white;
   padding: utils.rem(12px);
-  padding-bottom: calc(#{utils.rem(12px)} + $modal-bottom-shift);
+  padding-bottom: calc(#{$mask-padding} + #{$modal-bottom-shift});
   transition: all 220ms ease;
   display: flex;
   flex-direction: column;
   margin-left: auto;
   margin-right: auto;
-  transform: translateY($modal-bottom-shift);
+  transform: translateY(calc(#{$modal-bottom-shift} + #{$mask-padding}));
   border-radius: utils.rem(8px);
   box-shadow: 0 8px 16px 8px rgba(#000, 0.4);
   overflow: auto;
@@ -53,9 +55,7 @@ $modal-bottom-shift: #{utils.rem(50px)};
 }
 
 .modal__close-btn {
-  width: 24px;
-  height: 24px;
-  padding: 6px;
+  padding: 12px;
   display: flex;
   background: transparent;
   margin-inline-start: auto;

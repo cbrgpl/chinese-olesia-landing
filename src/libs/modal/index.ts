@@ -13,11 +13,31 @@ const getElOrThrowErr = ($el: HTMLElement | string, $root: HTMLElement = documen
   }
 };
 
+const el1IsEl2OrChild = (el1: HTMLElement, el2: HTMLElement) => {
+  if (el1 === el2) {
+    return true;
+  }
+
+  let iterEl = el1;
+  while (iterEl.parentElement !== null) {
+    if (iterEl.parentElement === el2) {
+      return true;
+    }
+    iterEl = iterEl.parentElement;
+  }
+
+  return false;
+};
+
 enum EProcedureStatus {
   ABORT = 'abort',
   COMPLETE = 'complete',
 }
 
+type IClosingEl = {
+  $el: HTMLElement;
+  exact: boolean;
+};
 export class Modal {
   readonly $mask: HTMLElement;
   private readonly _$window: HTMLElement;
@@ -36,18 +56,22 @@ export class Modal {
 
     this._$window = this.$mask.children[0] as HTMLElement;
 
-    this._addOnCloseListeners([this.$mask, getElOrThrowErr('.modal__close-btn', this.$mask)]);
+    this._addOnCloseListeners([
+      { $el: this.$mask, exact: true },
+      { $el: getElOrThrowErr('.modal__close-btn', this.$mask), exact: false },
+    ]);
   }
 
   get visible() {
     return this._visible;
   }
 
-  private _addOnCloseListeners($els: HTMLElement[]) {
-    for (const $el of $els) {
+  private _addOnCloseListeners($els: IClosingEl[]) {
+    for (const { $el, exact } of $els) {
       $el.addEventListener('click', (e) => {
-        if (e.target === $el) {
-          console.log('hide');
+        const shouldCallHide = exact ? e.target === $el : el1IsEl2OrChild(e.target as HTMLElement, $el);
+
+        if (shouldCallHide) {
           this.hide();
         }
       });
