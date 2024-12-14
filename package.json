@@ -63,6 +63,7 @@
     "yargs": "^17.7.2"
   },
   "dependencies": {
+    "requestidlecallback-polyfill": "^1.0.2",
     "swiper": "^11.1.10"
   }
 }
