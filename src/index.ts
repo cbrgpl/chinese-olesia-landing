@@ -25,9 +25,25 @@ if (import.meta.env.DEV) {
   addVersionLine();
 }
 
+const hidePreloader = () => {
+  setTimeout(() => {
+    const $preloader = document.querySelector('.preloader') as HTMLElement | null;
+
+    if (!$preloader) {
+      return;
+    }
+
+    $preloader.classList.add('preloader--hidden');
+    $preloader.addEventListener('transitionend', () => {
+      $preloader.style.display = 'none';
+    });
+  }, 150);
+};
+
 window.addEventListener('load', async () => {
   await import('./styles/index.scss' as any);
   allowImagesLoading();
   import('./scripts/universities');
   import('./scripts/feedback');
+  hidePreloader();
 });
