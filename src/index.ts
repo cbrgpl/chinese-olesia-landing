@@ -43,7 +43,7 @@ const hidePreloader = () => {
 window.addEventListener('load', async () => {
   await import('./styles/index.scss' as any);
   allowImagesLoading();
-  import('./scripts/universities');
+  await import('./scripts/universities');
   import('./scripts/feedback');
   hidePreloader();
 });
