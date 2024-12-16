@@ -2,6 +2,13 @@ import imageStyles from './image.css?inline';
 
 import { createStyleTags } from '../utils/createStyleTags';
 
+const sleep = (time: number) =>
+  new Promise((resolve) => {
+    setTimeout(() => {
+      resolve(null);
+    }, time);
+  });
+
 const OBSERVED_EL_ID_ATTR = 'data-observing-id';
 
 const getId = (() => {
@@ -26,7 +33,6 @@ const intersectionObserver = new IntersectionObserver(
     entries.forEach((entry) => {
       if (entry.isIntersecting) {
         const $target = entry.target as HTMLElement;
-
         const targetId = $target.getAttribute(OBSERVED_EL_ID_ATTR);
 
         if (targetId === null) {
@@ -46,7 +52,9 @@ const intersectionObserver = new IntersectionObserver(
     });
   },
   {
-    rootMargin: '150px 0px 0px 0px',
+    root: document.querySelector('main'),
+    rootMargin: '800px 0px 800px 0px',
+    threshold: 0,
   }
 );
 
@@ -216,6 +224,7 @@ class CImage extends HTMLElement {
     const $wrapper = this._createWrapper(imageAttrs);
     $shadow.append($wrapper);
 
+    await sleep(200); // I have to sleep because If I don't then Intersection Observer will load all images
     await this._waitUntilImageInViewport($wrapper);
 
     if (!imagesLoadingAvailable) {
